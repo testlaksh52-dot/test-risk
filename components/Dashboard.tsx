@@ -92,6 +92,10 @@ const Dashboard = ({
   const [isExporting, setIsExporting] = useState(false);
   const [selectedControl, setSelectedControl] = useState<any>(null);
   const [showDetailModal, setShowDetailModal] = useState(false);
+  const [assigneeDropdownOpen, setAssigneeDropdownOpen] = useState<
+    string | null
+  >(null);
+  const [viewMode, setViewMode] = useState<"all" | "parent" | "child">("all");
   // Close date picker when clicking outside (portal approach)
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -114,6 +118,27 @@ const Dashboard = ({
     };
   }, [showDatePicker]);
 
+  // Close assignee dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      const target = event.target as Element;
+      if (
+        assigneeDropdownOpen &&
+        !target.closest('[data-dropdown="assignee"]')
+      ) {
+        setAssigneeDropdownOpen(null);
+      }
+    };
+
+    if (assigneeDropdownOpen) {
+      document.addEventListener("mousedown", handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [assigneeDropdownOpen]);
+
   // Load saved views on component mount
   useEffect(() => {
     if (user) {
@@ -122,39 +147,119 @@ const Dashboard = ({
     }
   }, [user]);
 
-  // Get filtered data from mock data store with drill-down filters
+  // Get filtered data using mockControls with drill-down filters
   const getFilteredData = () => {
-    let filters = { ...selectedFilters };
+    let data = mockControls;
+
+    // Apply filter-based filtering
+    if (selectedFilters.location && selectedFilters.location.length > 0) {
+      data = data.filter((control) =>
+        selectedFilters.location!.includes(control.location)
+      );
+    }
+    if (
+      selectedFilters.businessLine &&
+      selectedFilters.businessLine.length > 0
+    ) {
+      data = data.filter((control) =>
+        selectedFilters.businessLine!.includes(control.businessLine)
+      );
+    }
+    if (selectedFilters.function && selectedFilters.function.length > 0) {
+      data = data.filter((control) =>
+        selectedFilters.function!.includes(control.function)
+      );
+    }
+    if (selectedFilters.controlType && selectedFilters.controlType.length > 0) {
+      data = data.filter((control) =>
+        selectedFilters.controlType!.includes(control.controlType)
+      );
+    }
+    if (
+      selectedFilters.controlFrequency &&
+      selectedFilters.controlFrequency.length > 0
+    ) {
+      data = data.filter((control) =>
+        selectedFilters.controlFrequency!.includes(control.frequency)
+      );
+    }
 
     // Apply drill-down filters
     if (selectedEffectivenessFilter) {
-      filters.effectiveness = [selectedEffectivenessFilter];
+      data = data.filter(
+        (control) => control.effectiveness === selectedEffectivenessFilter
+      );
     }
     if (selectedAutomationFilter) {
-      filters.automationType = [selectedAutomationFilter];
+      data = data.filter(
+        (control) => control.automationType === selectedAutomationFilter
+      );
     }
     if (selectedCortexMatchFilter) {
-      filters.cortexMatch = [selectedCortexMatchFilter];
+      data = data.filter(
+        (control) => control.cortexMatch === selectedCortexMatchFilter
+      );
     }
 
-    return mockDataStore.getControls(filters);
+    return data;
   };
 
   const filteredData = getFilteredData();
 
-  const totalItems = filteredData.length;
+  // Apply hierarchy view filter
+  const hierarchyFilteredData = filteredData.filter((control) => {
+    if (viewMode === "parent" && control.hierarchyLevel !== "Parent") {
+      return false;
+    }
+    if (viewMode === "child" && control.hierarchyLevel !== "Child") {
+      return false;
+    }
+    return true;
+  });
+
+  const totalItems = hierarchyFilteredData.length;
   const totalPages = Math.ceil(totalItems / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = Math.min(startIndex + itemsPerPage, totalItems);
-  const currentItems = filteredData.slice(startIndex, endIndex);
+  const currentItems = hierarchyFilteredData.slice(startIndex, endIndex);
 
   // Reset to page 1 when filters change
   const resetToFirstPage = () => {
     setCurrentPage(1);
   };
 
-  // Get dashboard metrics from mock data store
-  const dashboardMetrics = mockDataStore.getDashboardMetrics(selectedFilters);
+  // Get dashboard metrics using mockControls data
+  const dashboardMetrics = {
+    cortexMatch: {
+      gap: mockControls.filter((c) => c.cortexMatch === "Gap").length,
+      unmatched: mockControls.filter((c) => c.cortexMatch === "Unmatched")
+        .length,
+      matched: mockControls.filter((c) => c.cortexMatch === "Matched").length,
+      resolved: mockControls.filter((c) => c.cortexMatch === "Resolved").length,
+    },
+    effectiveness: {
+      ineffective: mockControls.filter((c) => c.effectiveness === "Ineffective")
+        .length,
+      needsImprovement: mockControls.filter(
+        (c) => c.effectiveness === "Needs Improvement"
+      ).length,
+      notRated: mockControls.filter((c) => c.effectiveness === "Not Rated")
+        .length,
+      effective: mockControls.filter((c) => c.effectiveness === "Effective")
+        .length,
+    },
+    automation: {
+      manual: mockControls.filter((c) => c.automationType === "Manual").length,
+      semiAutomated: mockControls.filter(
+        (c) => c.automationType === "Semi-Automated"
+      ).length,
+      itDependent: mockControls.filter(
+        (c) => c.automationType === "IT Dependent"
+      ).length,
+      automated: mockControls.filter((c) => c.automationType === "Automated")
+        .length,
+    },
+  };
 
   const resetFilters = () => {
     setSelectedFilters({
@@ -172,6 +277,7 @@ const Dashboard = ({
     setSelectedEffectivenessFilter(null);
     setSelectedAutomationFilter(null);
     setSelectedCortexMatchFilter(null);
+    setViewMode("all");
     setDateRange({ start: "", end: "" });
     setCurrentPage(1);
   };
@@ -206,10 +312,10 @@ const Dashboard = ({
 
       // Prepare export data
       const exportData: ExportData = {
-        controls: filteredData,
+        controls: hierarchyFilteredData as any,
         filters: selectedFilters,
         exportConfig,
-        dashboardMetrics: mockDataStore.getDashboardMetrics(selectedFilters),
+        dashboardMetrics,
         auditTrail: exportConfig.includeAuditTrail
           ? mockDataStore.getAuditTrail()
           : undefined,
@@ -225,7 +331,7 @@ const Dashboard = ({
         action: "EXPORT",
         entityType: "system",
         entityId: "dashboard",
-        reason: `Exported ${filteredData.length} controls in ${exportConfig.format} format`,
+        reason: `Exported ${hierarchyFilteredData.length} controls in ${exportConfig.format} format`,
       });
 
       console.log(`Export completed successfully: ${exportConfig.format}`);
@@ -256,6 +362,27 @@ const Dashboard = ({
     // We just need to refresh the data if needed
     console.log("Control updated:", updatedControl);
   };
+
+  const handleNavigateToControl = (control: any) => {
+    setSelectedControl(control);
+    // The modal will re-render with the new control
+  };
+
+  const handleAssigneeChange = (controlId: string, assignedTo: string) => {
+    // Update the control's assignee in the mock data
+    const controlIndex = mockControls.findIndex((c) => c.id === controlId);
+    if (controlIndex !== -1) {
+      mockControls[controlIndex].assignedTo = assignedTo;
+    }
+    setAssigneeDropdownOpen(null);
+  };
+
+  const assigneeOptions = [
+    { id: "maya-rodriguez", name: "Maya Rodriguez" },
+    { id: "james-allen", name: "James Allen" },
+    { id: "grace-thompson", name: "Grace Thompson" },
+    { id: "travis-barker", name: "Travis Barker" },
+  ];
 
   const MetricCard = ({
     title,
@@ -528,24 +655,20 @@ const Dashboard = ({
         return "bg-cortex-red";
       case "Needs Improvement":
         return "bg-amber-500";
+      case "Unmatched":
+        return "bg-amber-500";
       case "Manual":
         return "bg-cortex-red";
       case "Generated":
         return "bg-cortex-red";
       case "Not Started":
-        return "bg-cortex-green";
+        return "bg-cortex-gray";
       case "Approved":
         return "bg-cortex-blue";
       case "Rejected":
         return "bg-cortex-red";
       case "Completed":
         return "bg-cortex-green";
-      case "On Hold":
-        return "bg-cortex-gray";
-      case "Blocked":
-        return "bg-cortex-red";
-      case "Open":
-        return "bg-cortex-gray";
       case "In review":
         return "bg-cortex-blue";
       case "Outstanding":
@@ -1250,9 +1373,52 @@ const Dashboard = ({
         <div className="bg-glass-aurora backdrop-blur-sm rounded-2xl border border-glass-border shadow-2xl">
           <div className="p-4 border-b border-glass-border">
             <div className="flex justify-between items-center mb-4">
-              <h3 className="text-white text-sm font-medium font-sans">
-                Control Detail
-              </h3>
+              <div className="flex items-center space-x-4">
+                <h3 className="text-white text-sm font-medium font-sans">
+                  Control Detail
+                </h3>
+
+                {/* Hierarchy View Toggle */}
+                <div className="flex items-center space-x-2">
+                  <label className="text-white text-xs font-medium">
+                    View:
+                  </label>
+                  <div className="bg-navy-dark rounded-lg p-1 flex">
+                    <button
+                      onClick={() => setViewMode("all")}
+                      className={`px-3 py-1 text-xs rounded-md transition-all duration-300 ${
+                        viewMode === "all"
+                          ? "bg-cortex-blue text-white shadow-lg"
+                          : "text-gray-400 hover:text-white"
+                      }`}
+                    >
+                      All
+                    </button>
+                    <button
+                      onClick={() => setViewMode("parent")}
+                      className={`px-3 py-1 text-xs rounded-md transition-all duration-300 flex items-center space-x-1 ${
+                        viewMode === "parent"
+                          ? "bg-cortex-blue text-white shadow-lg"
+                          : "text-gray-400 hover:text-white"
+                      }`}
+                    >
+                      <span>↗</span>
+                      <span>Parents</span>
+                    </button>
+                    <button
+                      onClick={() => setViewMode("child")}
+                      className={`px-3 py-1 text-xs rounded-md transition-all duration-300 flex items-center space-x-1 ${
+                        viewMode === "child"
+                          ? "bg-cortex-blue text-white shadow-lg"
+                          : "text-gray-400 hover:text-white"
+                      }`}
+                    >
+                      <span>↘</span>
+                      <span>Children</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
               <h3 className="text-white text-sm font-medium font-sans">
                 Control Enhancement and Action
               </h3>
@@ -1282,6 +1448,9 @@ const Dashboard = ({
                   <th className="text-left text-white text-[10px] font-medium p-3 font-sans">
                     Owner
                   </th>
+                  <th className="text-left text-white text-[10px] font-medium p-3 font-sans">
+                    Hierarchy
+                  </th>
                   <th className="text-center text-white text-[10px] font-medium p-3 font-sans">
                     Key Indicators
                   </th>
@@ -1292,7 +1461,7 @@ const Dashboard = ({
                     Approval
                   </th>
                   <th className="text-left text-white text-[10px] font-medium p-3 font-sans">
-                    Assignee
+                    Assigned To
                   </th>
                   <th className="text-left text-white text-[10px] font-medium p-3 font-sans">
                     Status
@@ -1303,8 +1472,18 @@ const Dashboard = ({
                 {currentItems.map((control) => (
                   <tr
                     key={control.id}
-                    onClick={() => handleRowClick(control)}
-                    className="border-b border-glass-border hover:bg-glass-mystic hover:backdrop-blur-sm transition-all duration-500 cursor-pointer"
+                    onClick={(e) => {
+                      // Don't trigger row click if clicking on dropdown or its children
+                      const target = e.target as HTMLElement;
+                      if (!target.closest('[data-dropdown="assignee"]')) {
+                        handleRowClick(control);
+                      }
+                    }}
+                    className={`border-b border-glass-border transition-all duration-500 cursor-pointer ${
+                      assigneeDropdownOpen === control.id
+                        ? "bg-glass-mystic backdrop-blur-sm"
+                        : "hover:bg-glass-mystic hover:backdrop-blur-sm"
+                    }`}
                   >
                     <td className="text-white text-xs p-3 font-sans">
                       {control.code}
@@ -1317,6 +1496,19 @@ const Dashboard = ({
                     </td>
                     <td className="text-white text-xs p-3 font-sans">
                       {control.owner}
+                    </td>
+                    <td className="p-3">
+                      <span
+                        className={`inline-flex items-center px-2 py-1 rounded text-[10px] font-medium text-white ${
+                          control.hierarchyLevel === "Parent"
+                            ? "bg-cortex-blue"
+                            : "bg-amber-500"
+                        } font-sans`}
+                      >
+                        {control.hierarchyLevel === "Parent"
+                          ? "↗ Parent"
+                          : "↘ Child"}
+                      </span>
                     </td>
                     <td className="p-3">
                       <div className="flex flex-col items-center space-y-1">
@@ -1354,8 +1546,63 @@ const Dashboard = ({
                         {control.cortexMatch}
                       </span>
                     </td>
-                    <td className="text-white text-xs p-3 font-sans">
-                      {control.assignedTo}
+                    <td className="p-3 relative" data-dropdown="assignee">
+                      <div className="relative">
+                        <button
+                          data-assignee-button={control.id}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setAssigneeDropdownOpen(
+                              assigneeDropdownOpen === control.id
+                                ? null
+                                : control.id
+                            );
+                          }}
+                          className="bg-glass-aurora text-white px-3 py-1 rounded text-xs border border-glass-border hover:bg-glass-mystic transition-all duration-500 flex items-center space-x-2"
+                        >
+                          <span>{control.assignedTo || "Unassigned"}</span>
+                          <ChevronDown size={12} />
+                        </button>
+                        {assigneeDropdownOpen === control.id &&
+                          createPortal(
+                            <div
+                              className="fixed bg-dropdown-bg backdrop-blur-md border border-glass-border rounded-lg shadow-xl z-[99999] w-48 animate-fadeIn"
+                              style={{
+                                left: `${
+                                  (
+                                    document.querySelector(
+                                      `[data-assignee-button="${control.id}"]`
+                                    ) as HTMLElement
+                                  )?.getBoundingClientRect().left
+                                }px`,
+                                top: `${
+                                  ((
+                                    document.querySelector(
+                                      `[data-assignee-button="${control.id}"]`
+                                    ) as HTMLElement
+                                  )?.getBoundingClientRect().bottom || 0) + 8
+                                }px`,
+                              }}
+                            >
+                              {assigneeOptions.map((option) => (
+                                <button
+                                  key={option.id}
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    handleAssigneeChange(
+                                      control.id,
+                                      option.name
+                                    );
+                                  }}
+                                  className="w-full text-left text-white px-3 py-2 hover:bg-glass-mystic text-xs transition-colors first:rounded-t-lg last:rounded-b-lg"
+                                >
+                                  {option.name}
+                                </button>
+                              ))}
+                            </div>,
+                            document.body
+                          )}
+                      </div>
                     </td>
                     <td className="p-3">
                       <span
@@ -1480,6 +1727,7 @@ const Dashboard = ({
         isOpen={showDetailModal}
         onClose={handleCloseModal}
         onSave={handleSaveControl}
+        onNavigateToControl={handleNavigateToControl}
       />
     </div>
   );

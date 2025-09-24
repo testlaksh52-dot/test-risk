@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { X, Save, Edit3, Lock, CheckCircle, AlertCircle } from "lucide-react";
 import { Control, User } from "@/lib/mockDataStore";
 import { mockDataStore } from "@/lib/mockDataStore";
+import { mockControls } from "@/lib/mockData";
 
 interface ControlDetailModalProps {
   control: Control | null;
@@ -11,6 +12,7 @@ interface ControlDetailModalProps {
   isOpen: boolean;
   onClose: () => void;
   onSave: (updatedControl: Control) => void;
+  onNavigateToControl?: (control: Control) => void;
 }
 
 const ControlDetailModal = ({
@@ -19,6 +21,7 @@ const ControlDetailModal = ({
   isOpen,
   onClose,
   onSave,
+  onNavigateToControl,
 }: ControlDetailModalProps) => {
   const [isEditing, setIsEditing] = useState(false);
   const [editedControl, setEditedControl] = useState<Control | null>(null);
@@ -30,6 +33,33 @@ const ControlDetailModal = ({
     user?.role === "Manager" ||
     user?.role === "Cortex_Agent" ||
     user?.role === "2LOD";
+
+  // Helper functions for parent/child navigation
+  const getRelatedControls = (control: Control) => {
+    const related = {
+      parent: null as Control | null,
+      children: [] as Control[],
+    };
+
+    if (control.hierarchyLevel === "Child" && control.parentControlId) {
+      related.parent =
+        mockControls.find((c) => c.id === control.parentControlId) || null;
+    }
+
+    if (control.hierarchyLevel === "Parent" && control.childControlIds) {
+      related.children = mockControls.filter((c) =>
+        control.childControlIds?.includes(c.id)
+      );
+    }
+
+    return related;
+  };
+
+  const handleNavigateToControl = (targetControl: Control) => {
+    if (onNavigateToControl) {
+      onNavigateToControl(targetControl);
+    }
+  };
 
   useEffect(() => {
     if (control) {
@@ -113,6 +143,59 @@ const ControlDetailModal = ({
             </button>
           </div>
         </div>
+
+        {/* Parent/Child Navigation */}
+        {control &&
+          (() => {
+            const related = getRelatedControls(control);
+            return (
+              (related.parent || related.children.length > 0) && (
+                <div className="px-6 py-4 bg-navy-dark border-b border-glass-border">
+                  <h4 className="text-white font-medium mb-3 flex items-center">
+                    <svg
+                      className="w-4 h-4 mr-2"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M13 10V3L4 14h7v7l9-11h-7z"
+                      />
+                    </svg>
+                    Control Hierarchy Navigation
+                  </h4>
+
+                  <div className="flex flex-wrap gap-2">
+                    {/* Parent Control */}
+                    {related.parent && (
+                      <button
+                        onClick={() => handleNavigateToControl(related.parent!)}
+                        className="bg-cortex-blue bg-opacity-20 hover:bg-opacity-30 border border-cortex-blue text-white px-3 py-2 rounded-lg text-sm transition-all duration-300 flex items-center space-x-2"
+                      >
+                        <span>↑</span>
+                        <span>Parent: {related.parent.code}</span>
+                      </button>
+                    )}
+
+                    {/* Child Controls */}
+                    {related.children.map((child) => (
+                      <button
+                        key={child.id}
+                        onClick={() => handleNavigateToControl(child)}
+                        className="bg-amber-500 bg-opacity-20 hover:bg-opacity-30 border border-amber-500 text-white px-3 py-2 rounded-lg text-sm transition-all duration-300 flex items-center space-x-2"
+                      >
+                        <span>↓</span>
+                        <span>Child: {child.code}</span>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )
+            );
+          })()}
 
         {/* Content */}
         <div className="p-6 overflow-y-auto flex-grow min-h-0">

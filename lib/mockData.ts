@@ -4,121 +4,326 @@ export interface Control {
   name: string;
   description: string;
   owner: string;
-  keyIndicators: "Gap" | "Needs Improvement" | "Manual";
-  rewrite: "Generated" | "Not Started" | "Approved" | "Rejected";
-  assignedTo: string;
-  status:
-    | "In review"
-    | "Pending"
-    | "Outstanding"
-    | "Completed"
-    | "On Hold"
-    | "Blocked"
-    | "Open";
-  update: string;
+
+  // Parent/Child Relationship
+  hierarchyLevel: "Parent" | "Child";
+  parentControlId?: string;
+  childControlIds?: string[];
+
+  // Status and Classifications
+  status: "Not Started" | "In review" | "Completed";
+  controlStatus: "Live" | "Retired" | "Demised";
+
+  // Control Characteristics
   effectiveness:
     | "Effective"
     | "Ineffective"
     | "Needs Improvement"
     | "Not Rated";
   automationType: "Manual" | "Semi-Automated" | "IT Dependent" | "Automated";
+  controlMethod: "Preventive" | "Detective" | "Predictive";
+  controlType: "Prevent" | "Detect";
   frequency: string;
-  controlType: string;
+
+  // Business Context
   businessLine: string;
   function: string;
   location: string;
+
+  // Risk Mapping
+  linkedRisks: {
+    riskId: string;
+    riskName: string;
+    riskCategory: "Business" | "Regulatory" | "IT" | "Operational";
+  }[];
+
+  // CORA Generated Data
+  keyIndicators: "Gap" | "Needs Improvement" | "Manual";
   cortexMatch: "Gap" | "Unmatched" | "Matched" | "Resolved";
   finalScore: number;
+  coraIndex: number;
+
+  // Enhancement Workflow
+  rewrite: "Generated" | "Not Started" | "Approved" | "Rejected";
+  assignedTo: string;
+  enhancementStatus: "Not Started" | "In Progress" | "Complete";
+  enhancementRecommendation?: string;
+  targetDate?: string;
+  rootCause?: string;
+  comments?: string;
+
+  // Audit Trail
+  lastUpdated: string;
+  version: string;
+
+  // Legacy fields for compatibility
+  update: string;
 }
 
 export const mockControls: Control[] = [
   {
     id: "1",
     code: "CTR-0036",
-    name: "Approval Control - Core Banking",
+    name: "Payment Authorization Control - Parent",
     description:
-      "Reconcile deployment changes daily against source of record to prevent...",
+      "Master control for payment authorization across all channels ensuring dual approval for transactions above threshold limits.",
     owner: "Nina Petrova",
-    keyIndicators: "Gap",
-    rewrite: "Not Started",
-    assignedTo: "Maya Rodriguez",
-    status: "Completed",
-    update: "",
+
+    // Parent/Child Relationship
+    hierarchyLevel: "Parent",
+    childControlIds: ["2", "3", "4"],
+
+    // Status and Classifications
+    status: "Not Started",
+    controlStatus: "Live",
+
+    // Control Characteristics
     effectiveness: "Effective",
     automationType: "Automated",
-    frequency: "Daily",
-    controlType: "Preventive",
+    controlMethod: "Preventive",
+    controlType: "Prevent",
+    frequency: "Real-time",
+
+    // Business Context
     businessLine: "Retail Banking",
-    function: "Core Banking",
+    function: "Payment Processing",
     location: "US",
+
+    // Risk Mapping
+    linkedRisks: [
+      {
+        riskId: "RSK-001",
+        riskName: "Unauthorized Payment Risk",
+        riskCategory: "Operational",
+      },
+      {
+        riskId: "RSK-002",
+        riskName: "Regulatory Compliance Risk",
+        riskCategory: "Regulatory",
+      },
+    ],
+
+    // CORA Generated Data
+    keyIndicators: "Gap",
     cortexMatch: "Gap",
-    finalScore: 40,
+    finalScore: 85,
+    coraIndex: 8.5,
+
+    // Enhancement Workflow
+    rewrite: "Not Started",
+    assignedTo: "Maya Rodriguez",
+    enhancementStatus: "Not Started",
+    enhancementRecommendation:
+      "Implement additional validation for high-value transactions",
+    targetDate: "2024-06-30",
+    comments: "Priority control for regulatory compliance",
+
+    // Audit Trail
+    lastUpdated: "2024-01-15",
+    version: "2.1",
+
+    // Legacy fields
+    update: "",
   },
   {
     id: "2",
     code: "CTR-0037",
-    name: "Reconciliation Control - Cloud Infra",
+    name: "Online Banking Payment Authorization - Child",
     description:
-      "Automate production database backups to minimize manual errors and improve...",
+      "Specific control for online banking channel payment authorization implementing dual approval workflow for transactions exceeding $10,000.",
     owner: "Sophia Nguyen",
-    keyIndicators: "Needs Improvement",
-    rewrite: "Generated",
-    assignedTo: "James Allen",
-    status: "On Hold",
-    update: "",
+
+    // Parent/Child Relationship
+    hierarchyLevel: "Child",
+    parentControlId: "1",
+
+    // Status and Classifications
+    status: "Not Started",
+    controlStatus: "Live",
+
+    // Control Characteristics
     effectiveness: "Needs Improvement",
     automationType: "Semi-Automated",
-    frequency: "Daily",
-    controlType: "Detective",
-    businessLine: "Commercial Banking",
-    function: "Cloud Infrastructure",
-    location: "UK",
+    controlMethod: "Preventive",
+    controlType: "Prevent",
+    frequency: "Real-time",
+
+    // Business Context
+    businessLine: "Retail Banking",
+    function: "Digital Banking",
+    location: "US",
+
+    // Risk Mapping
+    linkedRisks: [
+      {
+        riskId: "RSK-001",
+        riskName: "Unauthorized Payment Risk",
+        riskCategory: "Operational",
+      },
+      {
+        riskId: "RSK-003",
+        riskName: "Digital Channel Fraud Risk",
+        riskCategory: "IT",
+      },
+    ],
+
+    // CORA Generated Data
+    keyIndicators: "Needs Improvement",
     cortexMatch: "Unmatched",
-    finalScore: 50,
+    finalScore: 72,
+    coraIndex: 7.2,
+
+    // Enhancement Workflow
+    rewrite: "Generated",
+    assignedTo: "James Allen",
+    enhancementStatus: "In Progress",
+    enhancementRecommendation: "Upgrade to real-time fraud detection system",
+    targetDate: "2024-04-30",
+    comments: "Requires integration with new fraud detection API",
+
+    // Audit Trail
+    lastUpdated: "2024-01-20",
+    version: "1.8",
+
+    // Legacy fields
+    update: "",
   },
   {
     id: "3",
     code: "CTR-0038",
-    name: "Change Control - Trade Surveillance",
+    name: "Wire Transfer Payment Authorization - Child",
     description:
-      "Automate third-party integrations to minimize manual errors and improve...",
+      "Specialized control for wire transfer authorization requiring additional compliance checks and senior management approval for international transfers exceeding $50,000.",
     owner: "Amir Khan",
-    keyIndicators: "Manual",
-    rewrite: "Generated",
-    assignedTo: "Maya Rodriguez",
-    status: "Blocked",
-    update: "",
+
+    // Parent/Child Relationship
+    hierarchyLevel: "Child",
+    parentControlId: "1",
+
+    // Status and Classifications
+    status: "Not Started",
+    controlStatus: "Live",
+
+    // Control Characteristics
     effectiveness: "Effective",
     automationType: "IT Dependent",
+    controlMethod: "Preventive",
+    controlType: "Prevent",
     frequency: "Real-time",
-    controlType: "Detective",
-    businessLine: "Investment Banking",
-    function: "Trade Surveillance",
+
+    // Business Context
+    businessLine: "Commercial Banking",
+    function: "Wire Transfer Operations",
     location: "US",
+
+    // Risk Mapping
+    linkedRisks: [
+      {
+        riskId: "RSK-001",
+        riskName: "Unauthorized Payment Risk",
+        riskCategory: "Operational",
+      },
+      {
+        riskId: "RSK-004",
+        riskName: "AML/BSA Compliance Risk",
+        riskCategory: "Regulatory",
+      },
+      {
+        riskId: "RSK-005",
+        riskName: "International Transfer Risk",
+        riskCategory: "Business",
+      },
+    ],
+
+    // CORA Generated Data
+    keyIndicators: "Manual",
     cortexMatch: "Matched",
-    finalScore: 16,
+    finalScore: 88,
+    coraIndex: 8.8,
+
+    // Enhancement Workflow
+    rewrite: "Generated",
+    assignedTo: "Maya Rodriguez",
+    enhancementStatus: "Complete",
+    enhancementRecommendation: "Implement automated OFAC screening",
+    targetDate: "2024-03-15",
+    comments: "Enhanced with real-time sanctions screening",
+
+    // Audit Trail
+    lastUpdated: "2024-01-25",
+    version: "3.2",
+
+    // Legacy fields
+    update: "",
   },
   {
     id: "4",
     code: "CTR-0039",
-    name: "Backup & Recovery Control - AML...",
+    name: "Mobile Banking Payment Authorization - Child",
     description:
-      "Reconcile ETL jobs daily against source of record to prevent misstatement.",
+      "Mobile application specific payment control implementing biometric authentication and device binding for transactions above $5,000.",
     owner: "Daniel Rivera",
-    keyIndicators: "Gap",
-    rewrite: "Approved",
-    assignedTo: "Maya Rodriguez",
-    status: "Open",
-    update: "",
+
+    // Parent/Child Relationship
+    hierarchyLevel: "Child",
+    parentControlId: "1",
+
+    // Status and Classifications
+    status: "Not Started",
+    controlStatus: "Live",
+
+    // Control Characteristics
     effectiveness: "Ineffective",
     automationType: "Manual",
-    frequency: "Daily",
-    controlType: "Preventive",
+    controlMethod: "Preventive",
+    controlType: "Prevent",
+    frequency: "Real-time",
+
+    // Business Context
     businessLine: "Retail Banking",
-    function: "AML Compliance",
-    location: "EU",
+    function: "Mobile Banking",
+    location: "US",
+
+    // Risk Mapping
+    linkedRisks: [
+      {
+        riskId: "RSK-001",
+        riskName: "Unauthorized Payment Risk",
+        riskCategory: "Operational",
+      },
+      {
+        riskId: "RSK-006",
+        riskName: "Mobile Device Security Risk",
+        riskCategory: "IT",
+      },
+      {
+        riskId: "RSK-007",
+        riskName: "Biometric Authentication Risk",
+        riskCategory: "IT",
+      },
+    ],
+
+    // CORA Generated Data
+    keyIndicators: "Gap",
     cortexMatch: "Gap",
-    finalScore: 10,
+    finalScore: 65,
+    coraIndex: 6.5,
+
+    // Enhancement Workflow
+    rewrite: "Approved",
+    assignedTo: "Maya Rodriguez",
+    enhancementStatus: "Not Started",
+    enhancementRecommendation:
+      "Upgrade biometric authentication system and implement advanced device fingerprinting",
+    targetDate: "2024-08-30",
+    comments: "Critical enhancement needed for mobile security compliance",
+
+    // Audit Trail
+    lastUpdated: "2024-01-10",
+    version: "1.5",
+
+    // Legacy fields
+    update: "",
   },
   {
     id: "5",
@@ -130,7 +335,7 @@ export const mockControls: Control[] = [
     keyIndicators: "Needs Improvement",
     rewrite: "Rejected",
     assignedTo: "Grace Thompson",
-    status: "On Hold",
+    status: "Not Started",
     update: "",
     effectiveness: "Needs Improvement",
     automationType: "Semi-Automated",
@@ -152,7 +357,7 @@ export const mockControls: Control[] = [
     keyIndicators: "Manual",
     rewrite: "Generated",
     assignedTo: "Travis Barker",
-    status: "Open",
+    status: "Not Started",
     update: "",
     effectiveness: "Effective",
     automationType: "Automated",
@@ -177,10 +382,7 @@ export const mockControls: Control[] = [
     rewrite: ["Generated", "Not Started"][i % 2] as "Generated" | "Not Started",
     assignedTo:
       i % 2 === 0 ? `User ${i + 7} ${new Date().getDate()} Aug 25` : "Pending",
-    status: ["In review", "Outstanding", "Pending"][i % 3] as
-      | "In review"
-      | "Outstanding"
-      | "Pending",
+    status: "Not Started" as "Not Started",
     update: "",
     effectiveness: [
       "Effective",
@@ -212,6 +414,65 @@ export const mockControls: Control[] = [
       | "Resolved",
     finalScore: (i + 7) * 3 + 10,
   })),
+  // Sample control with amber amber red indicators
+  {
+    id: "amber-sample",
+    code: "CTR-0999",
+    name: "Sample Control with Amber Amber Red",
+    description:
+      "Sample control demonstrating amber amber red key indicators for testing",
+    owner: "Sample Owner",
+
+    // Parent/Child Relationship
+    hierarchyLevel: "Parent" as "Parent",
+    childControlIds: [],
+
+    // Status and Classifications
+    status: "Not Started" as "Not Started",
+    controlStatus: "Live" as "Live",
+
+    // Control Characteristics - These create amber amber red
+    effectiveness: "Needs Improvement" as "Needs Improvement", // amber
+    automationType: "Manual" as "Manual", // red
+    controlMethod: "Detective" as "Detective",
+    controlType: "Detect" as "Detect",
+    frequency: "Daily",
+
+    // Business Context
+    businessLine: "Retail Banking",
+    function: "Risk Management",
+    location: "US",
+
+    // Risk Mapping
+    linkedRisks: [
+      {
+        riskId: "RSK-999",
+        riskName: "Sample Risk",
+        riskCategory: "Operational" as "Operational",
+      },
+    ],
+
+    // CORA Generated Data - This creates the first amber
+    keyIndicators: "Needs Improvement" as "Needs Improvement",
+    cortexMatch: "Unmatched" as "Unmatched", // amber
+    finalScore: 45,
+    coraIndex: 4.5,
+
+    // Enhancement Workflow
+    rewrite: "Not Started" as "Not Started",
+    assignedTo: "Test User",
+    enhancementStatus: "Not Started" as "Not Started",
+    enhancementRecommendation: "Sample recommendation",
+    targetDate: "2024-12-31",
+    comments: "Sample control for testing amber amber red indicators",
+
+    // Audit Trail
+    lastUpdated: "2024-01-15",
+    version: "1.0",
+
+    // Legacy fields
+    update: "",
+  },
 ];
 
 export const dashboardMetrics = {
