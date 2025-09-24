@@ -24,7 +24,7 @@ const AuthSystem = ({ onLogin, onLogout }: AuthSystemProps) => {
     if (hasInitialized.current) return;
 
     // Check for existing session
-    const savedUser = localStorage.getItem("cortex-user");
+    const savedUser = localStorage.getItem("cora-user");
     if (savedUser) {
       try {
         const user = JSON.parse(savedUser);
@@ -33,7 +33,7 @@ const AuthSystem = ({ onLogin, onLogout }: AuthSystemProps) => {
         onLogin(user);
       } catch (error) {
         console.error("Error parsing saved user:", error);
-        localStorage.removeItem("cortex-user");
+        localStorage.removeItem("cora-user");
         setShowLogin(true);
       }
     } else {
@@ -56,7 +56,7 @@ const AuthSystem = ({ onLogin, onLogout }: AuthSystemProps) => {
       setCurrentUser(user);
       setIsAuthenticated(true);
       setShowLogin(false);
-      localStorage.setItem("cortex-user", JSON.stringify(user));
+      localStorage.setItem("cora-user", JSON.stringify(user));
       onLogin(user);
     } else {
       setLoginError("Invalid username or password");
@@ -66,7 +66,7 @@ const AuthSystem = ({ onLogin, onLogout }: AuthSystemProps) => {
   const handleLogout = () => {
     setCurrentUser(null);
     setIsAuthenticated(false);
-    localStorage.removeItem("cortex-user");
+    localStorage.removeItem("cora-user");
     onLogout();
   };
 
@@ -106,7 +106,7 @@ const AuthSystem = ({ onLogin, onLogout }: AuthSystemProps) => {
                 onChange={(e) =>
                   setLoginForm({ ...loginForm, username: e.target.value })
                 }
-                className="w-full bg-glass-aurora backdrop-blur-sm text-white px-4 py-3 rounded-xl border border-glass-border focus:ring-2 focus:ring-cortex-blue focus:border-cortex-blue transition-colors"
+                className="w-full bg-glass-aurora backdrop-blur-sm text-white px-4 py-3 rounded-xl border border-glass-border focus:ring-2 focus:ring-cora-blue focus:border-cora-blue transition-colors"
                 placeholder="Enter your username"
                 required
               />
@@ -122,21 +122,21 @@ const AuthSystem = ({ onLogin, onLogout }: AuthSystemProps) => {
                 onChange={(e) =>
                   setLoginForm({ ...loginForm, password: e.target.value })
                 }
-                className="w-full bg-glass-aurora backdrop-blur-sm text-white px-4 py-3 rounded-xl border border-glass-border focus:ring-2 focus:ring-cortex-blue focus:border-cortex-blue transition-colors"
+                className="w-full bg-glass-aurora backdrop-blur-sm text-white px-4 py-3 rounded-xl border border-glass-border focus:ring-2 focus:ring-cora-blue focus:border-cora-blue transition-colors"
                 placeholder="Enter your password"
                 required
               />
             </div>
 
             {loginError && (
-              <div className="text-cortex-red text-sm bg-cortex-red/10 border border-cortex-red/20 rounded-lg p-3">
+              <div className="text-cora-red text-sm bg-cora-red/10 border border-cortex-red/20 rounded-lg p-3">
                 {loginError}
               </div>
             )}
 
             <button
               type="submit"
-              className="w-full bg-cortex-blue text-white py-3 rounded-xl font-medium hover:bg-blue-600 transition-colors"
+              className="w-full bg-cora-blue text-white py-3 rounded-xl font-medium hover:bg-blue-600 transition-colors"
             >
               Sign In
             </button>

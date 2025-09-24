@@ -7,7 +7,7 @@ import DataIngestion from "@/components/DataIngestion";
 import DrillDown from "@/components/DrillDown";
 import ControlEnhancement from "@/components/ControlEnhancement";
 import Sidebar from "@/components/Sidebar";
-import { User as CortexUser } from "@/lib/mockDataStore";
+import { User as CoraUser } from "@/lib/mockDataStore";
 
 export default function Home() {
   const [activeView, setActiveView] = useState<
@@ -17,7 +17,7 @@ export default function Home() {
     | "drilldown"
     | "enhancement"
   >("dashboard");
-  const [currentUser, setCurrentUser] = useState<CortexUser | null>(null);
+  const [currentUser, setCurrentUser] = useState<CoraUser | null>(null);
   const [drillDownProps, setDrillDownProps] = useState<{
     selectedMetric: string;
     selectedValue: string;
@@ -26,7 +26,7 @@ export default function Home() {
 
   useEffect(() => {
     // Get current user from localStorage
-    const savedUser = localStorage.getItem("cortex-user");
+    const savedUser = localStorage.getItem("cora-user");
     if (savedUser) {
       setCurrentUser(JSON.parse(savedUser));
     }

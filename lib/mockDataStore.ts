@@ -1,11 +1,11 @@
-// Comprehensive Mock Data Store for Cortex System
+// Comprehensive Mock Data Store for CORA System
 // Supports all user journeys and role-based access
 
 export interface User {
   id: string;
   username: string;
   email: string;
-  role: "1LOD" | "1LOD_Data_Owner" | "2LOD" | "Cortex_Agent" | "Manager";
+  role: "1LOD" | "1LOD_Data_Owner" | "2LOD" | "CORA_Agent" | "Manager";
   permissions: string[];
   businessLine?: string;
   function?: string;
@@ -31,7 +31,7 @@ export interface Control {
     | "Ineffective"
     | "Needs Improvement"
     | "Not Yet Rated";
-  cortexMatch: "Matched" | "Unmatched" | "Gap" | "Resolved";
+  coraMatch: "Matched" | "Unmatched" | "Gap" | "Resolved";
   owner: string;
   assignedTo?: string;
   location: string;
@@ -111,7 +111,7 @@ export interface FilterConfig {
   controlFrequency?: string[];
   automationType?: string[];
   effectiveness?: string[];
-  cortexMatch?: string[];
+  coraMatch?: string[];
   owner?: string[];
   region?: string[];
   dateRange?: {
@@ -187,7 +187,7 @@ export const mockUsers: User[] = [
     id: "user-4",
     username: "cortex.agent",
     email: "cortex.agent@bank.com",
-    role: "Cortex_Agent",
+    role: "CORA_Agent",
     permissions: [
       "analyze_controls",
       "generate_recommendations",
@@ -236,7 +236,7 @@ export const mockControls: Control[] = [
     controlFrequency: "Daily",
     automationType: "Automated",
     effectiveness: "Effective",
-    cortexMatch: "Matched",
+    coraMatch: "Matched",
     owner: "John Smith",
     assignedTo: "Sarah Johnson",
     location: "New York",
@@ -287,7 +287,7 @@ export const mockControls: Control[] = [
     controlFrequency: "Real-time",
     automationType: "IT Dependent",
     effectiveness: "Needs Improvement",
-    cortexMatch: "Unmatched",
+    coraMatch: "Unmatched",
     owner: "Mike Wilson",
     assignedTo: "Lisa Brown",
     location: "London",
@@ -354,7 +354,7 @@ export const mockControls: Control[] = [
     controlFrequency: "Quarterly",
     automationType: "Semi-Automated",
     effectiveness: "Effective",
-    cortexMatch: "Matched",
+    coraMatch: "Matched",
     owner: "John Smith",
     assignedTo: "Tom Davis",
     location: "New York",
@@ -386,7 +386,7 @@ export const mockControls: Control[] = [
     controlFrequency: "Real-time",
     automationType: "Automated",
     effectiveness: "Ineffective",
-    cortexMatch: "Gap",
+    coraMatch: "Gap",
     owner: "John Smith",
     assignedTo: "Alice Johnson",
     location: "New York",
@@ -411,7 +411,7 @@ export const mockControls: Control[] = [
         entityId: "ctrl-004",
         reason: "Control identified as ineffective due to monitoring gaps",
         ipAddress: "192.168.1.102",
-        userAgent: "Cortex-Agent/1.0",
+        userAgent: "CORA-Agent/1.0",
       },
     ],
     enhancementStatus: "In Re-design",
@@ -474,7 +474,7 @@ export const generateAdditionalControls = (): Control[] => {
     "Needs Improvement",
     "Not Yet Rated",
   ];
-  const cortexMatchTypes = ["Matched", "Unmatched", "Gap", "Resolved"];
+  const coraMatchTypes = ["Matched", "Unmatched", "Gap", "Resolved"];
   const statusTypes = [
     "Live",
     "In review",
@@ -526,8 +526,8 @@ export const generateAdditionalControls = (): Control[] => {
       effectiveness: effectivenessTypes[
         Math.floor(Math.random() * effectivenessTypes.length)
       ] as any,
-      cortexMatch: cortexMatchTypes[
-        Math.floor(Math.random() * cortexMatchTypes.length)
+      coraMatch: coraMatchTypes[
+        Math.floor(Math.random() * coraMatchTypes.length)
       ] as any,
       owner: owners[Math.floor(Math.random() * owners.length)],
       assignedTo: owners[Math.floor(Math.random() * owners.length)],
@@ -576,7 +576,7 @@ export const mockSavedViews: SavedView[] = [
     userId: "user-2",
     filters: {
       effectiveness: ["Ineffective", "Needs Improvement"],
-      cortexMatch: ["Gap", "Unmatched"],
+      coraMatch: ["Gap", "Unmatched"],
     },
     isDefault: false,
     createdAt: "2024-01-12T14:30:00Z",
@@ -675,9 +675,9 @@ export class MockDataStore {
           filters.effectiveness!.includes(control.effectiveness)
         );
       }
-      if (filters.cortexMatch?.length) {
+      if (filters.coraMatch?.length) {
         filteredControls = filteredControls.filter((control) =>
-          filters.cortexMatch!.includes(control.cortexMatch)
+          filters.coraMatch!.includes(control.coraMatch)
         );
       }
       if (filters.automationType?.length) {
@@ -781,11 +781,11 @@ export class MockDataStore {
 
     return {
       totalControls: controls.length,
-      cortexMatch: {
-        matched: controls.filter((c) => c.cortexMatch === "Matched").length,
-        unmatched: controls.filter((c) => c.cortexMatch === "Unmatched").length,
-        gap: controls.filter((c) => c.cortexMatch === "Gap").length,
-        resolved: controls.filter((c) => c.cortexMatch === "Resolved").length,
+      coraMatch: {
+        matched: controls.filter((c) => c.coraMatch === "Matched").length,
+        unmatched: controls.filter((c) => c.coraMatch === "Unmatched").length,
+        gap: controls.filter((c) => c.coraMatch === "Gap").length,
+        resolved: controls.filter((c) => c.coraMatch === "Resolved").length,
       },
       effectiveness: {
         effective: controls.filter((c) => c.effectiveness === "Effective")

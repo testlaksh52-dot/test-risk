@@ -39,7 +39,7 @@ export interface Control {
 
   // CORA Generated Data
   keyIndicators: "Gap" | "Needs Improvement" | "Manual";
-  cortexMatch: "Gap" | "Unmatched" | "Matched" | "Resolved";
+  coraMatch: "Gap" | "Unmatched" | "Matched" | "Resolved";
   finalScore: number;
   coraIndex: number;
 
@@ -105,7 +105,7 @@ export const mockControls: Control[] = [
 
     // CORA Generated Data
     keyIndicators: "Gap",
-    cortexMatch: "Gap",
+    coraMatch: "Gap",
     finalScore: 85,
     coraIndex: 8.5,
 
@@ -169,7 +169,7 @@ export const mockControls: Control[] = [
 
     // CORA Generated Data
     keyIndicators: "Needs Improvement",
-    cortexMatch: "Unmatched",
+    coraMatch: "Unmatched",
     finalScore: 72,
     coraIndex: 7.2,
 
@@ -237,7 +237,7 @@ export const mockControls: Control[] = [
 
     // CORA Generated Data
     keyIndicators: "Manual",
-    cortexMatch: "Matched",
+    coraMatch: "Matched",
     finalScore: 88,
     coraIndex: 8.8,
 
@@ -305,7 +305,7 @@ export const mockControls: Control[] = [
 
     // CORA Generated Data
     keyIndicators: "Gap",
-    cortexMatch: "Gap",
+    coraMatch: "Gap",
     finalScore: 65,
     coraIndex: 6.5,
 
@@ -340,11 +340,11 @@ export const mockControls: Control[] = [
     effectiveness: "Needs Improvement",
     automationType: "Semi-Automated",
     frequency: "Monthly",
-    controlType: "Detective",
+    controlType: "Detect",
     businessLine: "Commercial Banking",
     function: "Data Management",
     location: "UK",
-    cortexMatch: "Unmatched",
+    coraMatch: "Unmatched",
     finalScore: 10,
   },
   {
@@ -362,11 +362,11 @@ export const mockControls: Control[] = [
     effectiveness: "Effective",
     automationType: "Automated",
     frequency: "Monthly",
-    controlType: "Preventive",
+    controlType: "Prevent",
     businessLine: "Investment Banking",
     function: "Ledger Management",
     location: "US",
-    cortexMatch: "Matched",
+    coraMatch: "Matched",
     finalScore: 4,
   },
   ...Array.from({ length: 16 }, (_, i) => ({
@@ -407,7 +407,7 @@ export const mockControls: Control[] = [
       "Credit Risk",
     ][i % 4],
     location: ["US", "UK", "EU", "APAC"][i % 4],
-    cortexMatch: ["Gap", "Unmatched", "Matched", "Resolved"][i % 4] as
+    coraMatch: ["Gap", "Unmatched", "Matched", "Resolved"][i % 4] as
       | "Gap"
       | "Unmatched"
       | "Matched"
