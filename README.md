@@ -1,6 +1,6 @@
-# Cortex Control & Risk Analytics Platform
+# CORA Control & Risk Analytics Platform
 
-A comprehensive end-to-end implementation of the Cortex User Journey system for control and risk management analytics. This platform provides role-based access, advanced filtering, interactive dashboards, data ingestion, and control enhancement workflows.
+A comprehensive end-to-end implementation of the CORA User Journey system for control and risk management analytics. This platform provides role-based access, advanced filtering, interactive dashboards, data ingestion, and control enhancement workflows.
 
 ## 🚀 Features Overview
 
@@ -17,7 +17,7 @@ A comprehensive end-to-end implementation of the Cortex User Journey system for 
 - **1LOD (First Line of Defense)**: Control owners and chief control office
 - **1LOD Data Owner**: Data management and upload permissions
 - **2LOD (Second Line of Defense)**: Risk management and compliance oversight
-- **Cortex Agent**: AI-powered analysis and recommendations
+- **CORA Agent**: AI-powered analysis and recommendations
 - **Manager**: Full access with audit trail and assignment capabilities
 
 ### **Advanced Analytics & Reporting**
@@ -105,7 +105,7 @@ Risk & Controls/
 
 **Key Metrics:**
 
-- Cortex Matching Status (Matched, Unmatched, Gap, Resolved)
+- CORA Matching Status (Matched, Unmatched, Gap, Resolved)
 - Control Effectiveness (Effective, Ineffective, Needs Improvement, Not Yet Rated)
 - Control Automation (Manual, Semi-Automated, IT Dependent, Automated)
 
@@ -151,7 +151,7 @@ Risk & Controls/
 
 - **Tailwind CSS**: Utility-first styling
 - **Glassmorphism**: Modern, professional design
-- **Custom Colors**: Cortex-specific color palette
+- **Custom Colors**: CORA-specific color palette
 - **Responsive Design**: Works across all screen sizes
 
 ## 🎨 Design System
@@ -225,7 +225,7 @@ interface User {
   id: string;
   username: string;
   email: string;
-  role: "1LOD" | "1LOD_Data_Owner" | "2LOD" | "Cortex_Agent" | "Manager";
+  role: "1LOD" | "1LOD_Data_Owner" | "2LOD" | "CORA_Agent" | "Manager";
   permissions: string[];
   businessLine?: string;
   function?: string;
@@ -286,7 +286,7 @@ interface Control {
 - **1LOD**: View dashboard, filter controls, export data, assign controls
 - **1LOD Data Owner**: All 1LOD permissions + upload data, manage mappings
 - **2LOD**: View dashboard, filter controls, export data, audit trail, challenge outcomes
-- **Cortex Agent**: Analyze controls, generate recommendations, classify controls, rate controls
+- **CORA Agent**: Analyze controls, generate recommendations, classify controls, rate controls
 - **Manager**: All permissions + audit trail, export audit
 
 ### **Audit Trail**
@@ -355,7 +355,7 @@ Use any of the demo credentials to access the system:
 
 - Navigate to Data Ingestion
 - Upload Excel/CSV files
-- Map fields to Cortex data model
+- Map fields to CORA data model
 - Validate and preview data
 - Complete upload process
 
@@ -389,7 +389,7 @@ Use any of the demo credentials to access the system:
 1. User selects file for upload
 2. System processes and validates file
 3. Field mapping interface presented
-4. User maps fields to Cortex model
+4. User maps fields to CORA model
 5. Data preview and validation
 6. Upload completion and dashboard update
 

@@ -403,7 +403,7 @@ const ControlDetailModal = ({
 
                 <div>
                   <label className="block text-sm font-medium text-gray-300 mb-1">
-                    Cortex Match
+                    CORA Match
                   </label>
                   <select
                     value={editedControl.cortexMatch}

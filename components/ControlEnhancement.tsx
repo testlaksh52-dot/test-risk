@@ -12,13 +12,13 @@ import {
 } from "lucide-react";
 import {
   mockDataStore,
-  User as CortexUser,
+  User as CORAUser,
   Control,
   AIRecommendation,
 } from "@/lib/mockDataStore";
 
 interface ControlEnhancementProps {
-  user: CortexUser;
+  user: CORAUser;
   onBack: () => void;
 }
 

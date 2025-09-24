@@ -31,7 +31,7 @@ export interface Control {
     | "Ineffective"
     | "Needs Improvement"
     | "Not Yet Rated";
-  coraMatch: "Matched" | "Unmatched" | "Gap" | "Resolved";
+  cortexMatch: "Matched" | "Unmatched" | "Gap" | "Resolved";
   owner: string;
   assignedTo?: string;
   location: string;
@@ -111,7 +111,7 @@ export interface FilterConfig {
   controlFrequency?: string[];
   automationType?: string[];
   effectiveness?: string[];
-  coraMatch?: string[];
+  cortexMatch?: string[];
   owner?: string[];
   region?: string[];
   dateRange?: {
@@ -236,7 +236,7 @@ export const mockControls: Control[] = [
     controlFrequency: "Daily",
     automationType: "Automated",
     effectiveness: "Effective",
-    coraMatch: "Matched",
+    cortexMatch: "Matched",
     owner: "John Smith",
     assignedTo: "Sarah Johnson",
     location: "New York",
@@ -287,7 +287,7 @@ export const mockControls: Control[] = [
     controlFrequency: "Real-time",
     automationType: "IT Dependent",
     effectiveness: "Needs Improvement",
-    coraMatch: "Unmatched",
+    cortexMatch: "Unmatched",
     owner: "Mike Wilson",
     assignedTo: "Lisa Brown",
     location: "London",
@@ -354,7 +354,7 @@ export const mockControls: Control[] = [
     controlFrequency: "Quarterly",
     automationType: "Semi-Automated",
     effectiveness: "Effective",
-    coraMatch: "Matched",
+    cortexMatch: "Matched",
     owner: "John Smith",
     assignedTo: "Tom Davis",
     location: "New York",
@@ -386,7 +386,7 @@ export const mockControls: Control[] = [
     controlFrequency: "Real-time",
     automationType: "Automated",
     effectiveness: "Ineffective",
-    coraMatch: "Gap",
+    cortexMatch: "Gap",
     owner: "John Smith",
     assignedTo: "Alice Johnson",
     location: "New York",
@@ -474,7 +474,7 @@ export const generateAdditionalControls = (): Control[] => {
     "Needs Improvement",
     "Not Yet Rated",
   ];
-  const coraMatchTypes = ["Matched", "Unmatched", "Gap", "Resolved"];
+  const cortexMatchTypes = ["Matched", "Unmatched", "Gap", "Resolved"];
   const statusTypes = [
     "Live",
     "In review",
@@ -526,8 +526,8 @@ export const generateAdditionalControls = (): Control[] => {
       effectiveness: effectivenessTypes[
         Math.floor(Math.random() * effectivenessTypes.length)
       ] as any,
-      coraMatch: coraMatchTypes[
-        Math.floor(Math.random() * coraMatchTypes.length)
+      cortexMatch: cortexMatchTypes[
+        Math.floor(Math.random() * cortexMatchTypes.length)
       ] as any,
       owner: owners[Math.floor(Math.random() * owners.length)],
       assignedTo: owners[Math.floor(Math.random() * owners.length)],
@@ -576,7 +576,7 @@ export const mockSavedViews: SavedView[] = [
     userId: "user-2",
     filters: {
       effectiveness: ["Ineffective", "Needs Improvement"],
-      coraMatch: ["Gap", "Unmatched"],
+      cortexMatch: ["Gap", "Unmatched"],
     },
     isDefault: false,
     createdAt: "2024-01-12T14:30:00Z",
@@ -675,9 +675,9 @@ export class MockDataStore {
           filters.effectiveness!.includes(control.effectiveness)
         );
       }
-      if (filters.coraMatch?.length) {
+      if (filters.cortexMatch?.length) {
         filteredControls = filteredControls.filter((control) =>
-          filters.coraMatch!.includes(control.coraMatch)
+          filters.cortexMatch!.includes(control.cortexMatch)
         );
       }
       if (filters.automationType?.length) {
@@ -781,11 +781,11 @@ export class MockDataStore {
 
     return {
       totalControls: controls.length,
-      coraMatch: {
-        matched: controls.filter((c) => c.coraMatch === "Matched").length,
-        unmatched: controls.filter((c) => c.coraMatch === "Unmatched").length,
-        gap: controls.filter((c) => c.coraMatch === "Gap").length,
-        resolved: controls.filter((c) => c.coraMatch === "Resolved").length,
+      cortexMatch: {
+        matched: controls.filter((c) => c.cortexMatch === "Matched").length,
+        unmatched: controls.filter((c) => c.cortexMatch === "Unmatched").length,
+        gap: controls.filter((c) => c.cortexMatch === "Gap").length,
+        resolved: controls.filter((c) => c.cortexMatch === "Resolved").length,
       },
       effectiveness: {
         effective: controls.filter((c) => c.effectiveness === "Effective")

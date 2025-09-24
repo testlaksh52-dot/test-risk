@@ -5,7 +5,7 @@ import { useLoading } from "@/hooks/useLoading";
 import Loader from "@/components/Loader";
 import AuthSystem from "@/components/AuthSystem";
 import { useState, useCallback } from "react";
-import { User as CoraUser } from "@/lib/mockDataStore";
+import { User as CORAUser } from "@/lib/mockDataStore";
 
 export default function RootLayout({
   children,
@@ -13,9 +13,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   const { isLoading } = useLoading();
-  const [currentUser, setCurrentUser] = useState<CoraUser | null>(null);
+  const [currentUser, setCurrentUser] = useState<CORAUser | null>(null);
 
-  const handleLogin = useCallback((user: CoraUser) => {
+  const handleLogin = useCallback((user: CORAUser) => {
     setCurrentUser(user);
   }, []);
 

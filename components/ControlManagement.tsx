@@ -70,38 +70,38 @@ const ControlManagement = ({ onViewChange, user }: ControlManagementProps) => {
   const getStatusColor = (status: string) => {
     switch (status) {
       case "Gap":
-        return "bg-cora-red";
+        return "bg-cortex-red";
       case "Needs Improvement":
         return "bg-amber-500";
       case "Unmatched":
         return "bg-amber-500";
       case "Manual":
-        return "bg-cora-red";
+        return "bg-cortex-red";
       case "Generated":
-        return "bg-cora-green";
+        return "bg-cortex-green";
       case "Not Started":
-        return "bg-cora-gray";
+        return "bg-cortex-gray";
       case "In review":
-        return "bg-cora-blue";
+        return "bg-cortex-blue";
       case "Completed":
-        return "bg-cora-green";
+        return "bg-cortex-green";
       case "Outstanding":
         return "bg-amber-500";
       default:
-        return "bg-cora-gray";
+        return "bg-cortex-gray";
     }
   };
 
   const getRecommendationColor = (color: string) => {
     switch (color) {
       case "red":
-        return "bg-cora-red";
+        return "bg-cortex-red";
       case "orange":
         return "bg-amber-500";
       case "green":
-        return "bg-cora-green";
+        return "bg-cortex-green";
       default:
-        return "bg-cora-gray";
+        return "bg-cortex-gray";
     }
   };
 
@@ -165,7 +165,7 @@ const ControlManagement = ({ onViewChange, user }: ControlManagementProps) => {
         // Update key indicators based on selected improvements
         // If first two indicators are selected, update them to "Matched" and "Effective"
         if (selectedKeyIndicators.has("1")) {
-          mockControls[controlIndex].coraMatch = "Matched";
+          mockControls[controlIndex].cortexMatch = "Matched";
         }
         if (selectedKeyIndicators.has("2")) {
           mockControls[controlIndex].effectiveness = "Effective";
@@ -185,13 +185,22 @@ const ControlManagement = ({ onViewChange, user }: ControlManagementProps) => {
 
   const getKeyIndicatorBoxes = (control: any) => {
     // Dynamic values based on each control's actual data
+    // If control is completed, show green for improved indicators
+    const isCompleted = control.status === "Completed";
+
     return [
       {
-        color: getStatusColor(control.coraMatch),
-        text: control.coraMatch,
+        color:
+          isCompleted && control.cortexMatch === "Matched"
+            ? "bg-cortex-green"
+            : getStatusColor(control.cortexMatch),
+        text: control.cortexMatch,
       },
       {
-        color: getStatusColor(control.effectiveness),
+        color:
+          isCompleted && control.effectiveness === "Effective"
+            ? "bg-cortex-green"
+            : getStatusColor(control.effectiveness),
         text: control.effectiveness,
       },
       {
@@ -357,7 +366,7 @@ const ControlManagement = ({ onViewChange, user }: ControlManagementProps) => {
                 setSelectedControlId("");
                 setSelectedAssignedTo("");
               }}
-              className="bg-cora-red text-white mt-4 px-4 py-2 rounded text-sm font-medium hover:bg-red-600"
+              className="bg-cortex-red text-white mt-4 px-4 py-2 rounded text-sm font-medium hover:bg-red-600"
             >
               RESET
             </button>
@@ -380,7 +389,7 @@ const ControlManagement = ({ onViewChange, user }: ControlManagementProps) => {
                     onClick={() => setViewMode("all")}
                     className={`px-3 py-1 text-xs rounded-md transition-all duration-300 ${
                       viewMode === "all"
-                        ? "bg-cora-blue text-white shadow-lg"
+                        ? "bg-cortex-blue text-white shadow-lg"
                         : "text-gray-400 hover:text-white"
                     }`}
                   >
@@ -390,7 +399,7 @@ const ControlManagement = ({ onViewChange, user }: ControlManagementProps) => {
                     onClick={() => setViewMode("parent")}
                     className={`px-3 py-1 text-xs rounded-md transition-all duration-300 flex items-center space-x-1 ${
                       viewMode === "parent"
-                        ? "bg-cora-blue text-white shadow-lg"
+                        ? "bg-cortex-blue text-white shadow-lg"
                         : "text-gray-400 hover:text-white"
                     }`}
                   >
@@ -401,7 +410,7 @@ const ControlManagement = ({ onViewChange, user }: ControlManagementProps) => {
                     onClick={() => setViewMode("child")}
                     className={`px-3 py-1 text-xs rounded-md transition-all duration-300 flex items-center space-x-1 ${
                       viewMode === "child"
-                        ? "bg-cora-blue text-white shadow-lg"
+                        ? "bg-cortex-blue text-white shadow-lg"
                         : "text-gray-400 hover:text-white"
                     }`}
                   >
@@ -518,7 +527,7 @@ const ControlManagement = ({ onViewChange, user }: ControlManagementProps) => {
                           <span
                             className={`inline-flex items-center px-2 py-1 rounded text-[10px] font-medium text-white ${
                               control.hierarchyLevel === "Parent"
-                                ? "bg-cora-blue"
+                                ? "bg-cortex-blue"
                                 : "bg-amber-500"
                             } font-sans`}
                           >
@@ -587,8 +596,8 @@ const ControlManagement = ({ onViewChange, user }: ControlManagementProps) => {
                             }}
                             className={`p-2 rounded-lg transition-all duration-300 ${
                               selectedUpdateRows.has(control.id)
-                                ? "bg-cora-blue text-white"
-                                : "bg-glass-mystic text-gray-400 hover:text-white hover:bg-cora-blue"
+                                ? "bg-cortex-blue text-white"
+                                : "bg-glass-mystic text-gray-400 hover:text-white hover:bg-cortex-blue"
                             }`}
                           >
                             <Edit size={14} />
@@ -642,7 +651,7 @@ const ControlManagement = ({ onViewChange, user }: ControlManagementProps) => {
                         <span className="text-amber-500 font-mono text-sm font-medium">
                           {control.code}
                         </span>
-                        <span className="text-cora-blue text-xs px-2 py-1 bg-cora-blue bg-opacity-20 rounded">
+                        <span className="text-cortex-blue text-xs px-2 py-1 bg-cortex-blue bg-opacity-20 rounded">
                           In Review
                         </span>
                       </div>
@@ -680,7 +689,7 @@ const ControlManagement = ({ onViewChange, user }: ControlManagementProps) => {
                       <span
                         className={`px-3 py-1 rounded-full text-xs font-medium ${
                           selectedControlForUpdate.hierarchyLevel === "Parent"
-                            ? "bg-cora-blue text-white"
+                            ? "bg-cortex-blue text-white"
                             : "bg-amber-500 text-white"
                         }`}
                       >
@@ -689,8 +698,8 @@ const ControlManagement = ({ onViewChange, user }: ControlManagementProps) => {
                       <span
                         className={`px-2 py-1 rounded text-xs ${
                           selectedControlForUpdate.controlStatus === "Live"
-                            ? "bg-cora-green text-white"
-                            : "bg-cora-gray text-white"
+                            ? "bg-cortex-green text-white"
+                            : "bg-cortex-gray text-white"
                         }`}
                       >
                         {selectedControlForUpdate.controlStatus}
@@ -732,7 +741,7 @@ const ControlManagement = ({ onViewChange, user }: ControlManagementProps) => {
                               onClick={() =>
                                 navigateToControl(related.parent.id)
                               }
-                              className="bg-cora-blue bg-opacity-20 hover:bg-opacity-30 border border-cora-blue text-white px-3 py-2 rounded-lg text-sm transition-all duration-300 flex items-center space-x-2"
+                              className="bg-cortex-blue bg-opacity-20 hover:bg-opacity-30 border border-cortex-blue text-white px-3 py-2 rounded-lg text-sm transition-all duration-300 flex items-center space-x-2"
                             >
                               <span>↑</span>
                               <span>
@@ -851,12 +860,12 @@ const ControlManagement = ({ onViewChange, user }: ControlManagementProps) => {
                               <span
                                 className={`w-2 h-2 rounded-full ${
                                   risk.riskCategory === "Operational"
-                                    ? "bg-cora-red"
+                                    ? "bg-cortex-red"
                                     : risk.riskCategory === "Regulatory"
                                     ? "bg-amber-500"
                                     : risk.riskCategory === "IT"
-                                    ? "bg-cora-blue"
-                                    : "bg-cora-green"
+                                    ? "bg-cortex-blue"
+                                    : "bg-cortex-green"
                                 }`}
                               ></span>
                               <span>
@@ -993,9 +1002,9 @@ const ControlManagement = ({ onViewChange, user }: ControlManagementProps) => {
                           // - Otherwise keep original color
                           let previewColor = box.color;
                           if (isCommitted && index < 2) {
-                            previewColor = "bg-cora-green";
+                            previewColor = "bg-cortex-green";
                           } else if (!isCommitted && isSelected && index < 2) {
-                            previewColor = "bg-cora-green"; // Preview of improvement
+                            previewColor = "bg-cortex-green"; // Preview of improvement
                           }
 
                           return (
@@ -1018,7 +1027,7 @@ const ControlManagement = ({ onViewChange, user }: ControlManagementProps) => {
                               </span>
                               {/* Show preview indicator */}
                               {!isCommitted && isSelected && index < 2 && (
-                                <span className="text-cora-green text-xs italic">
+                                <span className="text-cortex-green text-xs italic">
                                   → Will improve
                                 </span>
                               )}
@@ -1073,7 +1082,7 @@ const ControlManagement = ({ onViewChange, user }: ControlManagementProps) => {
                       {/* Suggested Control Description */}
                       <div>
                         <div className="flex items-center mb-3">
-                          <div className="w-4 h-4 bg-cora-green rounded mr-3"></div>
+                          <div className="w-4 h-4 bg-cortex-green rounded mr-3"></div>
                           <h5 className="text-white font-medium">
                             Suggested Control Description
                           </h5>
@@ -1081,7 +1090,7 @@ const ControlManagement = ({ onViewChange, user }: ControlManagementProps) => {
                         <div className="bg-navy-dark rounded p-4 text-white text-sm leading-relaxed">
                           <div className="space-y-4">
                             <div>
-                              <div className="font-semibold text-cora-blue mb-2">
+                              <div className="font-semibold text-cortex-blue mb-2">
                                 OBJECTIVES:
                               </div>
                               <div className="pl-3">
@@ -1094,7 +1103,7 @@ const ControlManagement = ({ onViewChange, user }: ControlManagementProps) => {
                             </div>
 
                             <div>
-                              <div className="font-semibold text-cora-green mb-2">
+                              <div className="font-semibold text-cortex-green mb-2">
                                 WHAT:
                               </div>
                               <div className="pl-3">
@@ -1128,7 +1137,7 @@ const ControlManagement = ({ onViewChange, user }: ControlManagementProps) => {
                             </div>
 
                             <div>
-                              <div className="font-semibold text-cora-red mb-2">
+                              <div className="font-semibold text-cortex-red mb-2">
                                 HOW:
                               </div>
                               <div className="pl-3">
@@ -1218,7 +1227,7 @@ const ControlManagement = ({ onViewChange, user }: ControlManagementProps) => {
                       </button>
                       <button
                         onClick={handleCommit}
-                        className="bg-cora-red text-white px-4 py-2 rounded text-sm font-medium hover:bg-red-600"
+                        className="bg-cortex-red text-white px-4 py-2 rounded text-sm font-medium hover:bg-red-600"
                       >
                         Save Enhancement
                       </button>

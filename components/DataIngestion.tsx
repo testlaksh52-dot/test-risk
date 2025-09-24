@@ -301,7 +301,7 @@ const DataIngestion = ({ user, onUploadComplete }: DataIngestionProps) => {
 
           <div className="bg-glass-mystic backdrop-blur-sm rounded-xl p-4">
             <h4 className="text-white font-semibold mb-3">
-              Map Your Fields to Cortex Data Model
+              Map Your Fields to CORA Data Model
             </h4>
             <div className="space-y-3">
               {fieldMappings.map((mapping, index) => (
@@ -324,7 +324,7 @@ const DataIngestion = ({ user, onUploadComplete }: DataIngestionProps) => {
                           : "border-glass-border"
                       }`}
                     >
-                      <option value="">Select Cortex Field</option>
+                      <option value="">Select CORA Field</option>
                       <option value="Control Code">Control Code</option>
                       <option value="Control Name">Control Name</option>
                       <option value="Description">Description</option>

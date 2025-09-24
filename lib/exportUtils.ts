@@ -25,7 +25,7 @@ export class ExportManager {
     // Add title
     doc.setFontSize(20);
     doc.setFont("helvetica", "bold");
-    doc.text("Cortex Dashboard Export", 20, 20);
+    doc.text("CORA Dashboard Export", 20, 20);
 
     // Add export info
     doc.setFontSize(10);
@@ -53,8 +53,8 @@ export class ExportManager {
       doc.text("Dashboard Metrics:", 20, yPos + 10);
       yPos += 25;
 
-      // Cortex Match Status
-      doc.text("Cortex Match Status:", 20, yPos);
+      // CORA Match Status
+      doc.text("CORA Match Status:", 20, yPos);
       yPos += 5;
       doc.text(`• Gaps: ${dashboardMetrics.cortexMatch.gap}`, 25, yPos);
       yPos += 5;
@@ -148,7 +148,7 @@ export class ExportManager {
             "Name",
             "Description",
             "Owner",
-            "Cortex Match",
+            "CORA Match",
             "Effectiveness",
             "Automation",
             "Final Score",
@@ -162,7 +162,7 @@ export class ExportManager {
           cellPadding: 2,
         },
         headStyles: {
-          fillColor: [41, 112, 249], // Cortex blue
+          fillColor: [41, 112, 249], // CORA blue
           textColor: 255,
           fontStyle: "bold",
         },
@@ -242,7 +242,7 @@ export class ExportManager {
         "Control Name": control.name,
         Description: control.description,
         Owner: control.owner,
-        "Cortex Match": control.cortexMatch,
+        "CORA Match": control.cortexMatch,
         Effectiveness: control.effectiveness,
         "Automation Type": control.automationType,
         "Final Score": control.finalScore,
@@ -261,19 +261,19 @@ export class ExportManager {
     if (dashboardMetrics) {
       const metricsData = [
         {
-          Metric: "Cortex Match - Gaps",
+          Metric: "CORA Match - Gaps",
           Value: dashboardMetrics.cortexMatch.gap,
         },
         {
-          Metric: "Cortex Match - Unmatched",
+          Metric: "CORA Match - Unmatched",
           Value: dashboardMetrics.cortexMatch.unmatched,
         },
         {
-          Metric: "Cortex Match - Matched",
+          Metric: "CORA Match - Matched",
           Value: dashboardMetrics.cortexMatch.matched,
         },
         {
-          Metric: "Cortex Match - Resolved",
+          Metric: "CORA Match - Resolved",
           Value: dashboardMetrics.cortexMatch.resolved,
         },
         {
@@ -358,7 +358,7 @@ export class ExportManager {
       "Control Name",
       "Description",
       "Owner",
-      "Cortex Match",
+      "CORA Match",
       "Effectiveness",
       "Automation Type",
       "Final Score",
@@ -404,7 +404,7 @@ export class ExportManager {
     const html = `
       <html>
         <head>
-          <title>Cortex Dashboard Export</title>
+          <title>CORA Dashboard Export</title>
           <style>
             body { font-family: Arial, sans-serif; margin: 40px; }
             .header { color: #2970f9; font-size: 24px; font-weight: bold; margin-bottom: 20px; }
@@ -418,7 +418,7 @@ export class ExportManager {
           </style>
         </head>
         <body>
-          <div class="header">Cortex Dashboard Export</div>
+          <div class="header">CORA Dashboard Export</div>
           <div class="section">
             <h2>Export Information</h2>
             <p><strong>Generated:</strong> ${new Date().toLocaleString()}</p>
@@ -429,10 +429,10 @@ export class ExportManager {
               ? `
             <div class="section">
               <h2>Dashboard Metrics</h2>
-              <div class="metric"><span>Cortex Match - Gaps:</span><span>${data.dashboardMetrics.cortexMatch.gap}</span></div>
-              <div class="metric"><span>Cortex Match - Unmatched:</span><span>${data.dashboardMetrics.cortexMatch.unmatched}</span></div>
-              <div class="metric"><span>Cortex Match - Matched:</span><span>${data.dashboardMetrics.cortexMatch.matched}</span></div>
-              <div class="metric"><span>Cortex Match - Resolved:</span><span>${data.dashboardMetrics.cortexMatch.resolved}</span></div>
+              <div class="metric"><span>CORA Match - Gaps:</span><span>${data.dashboardMetrics.cortexMatch.gap}</span></div>
+              <div class="metric"><span>CORA Match - Unmatched:</span><span>${data.dashboardMetrics.cortexMatch.unmatched}</span></div>
+              <div class="metric"><span>CORA Match - Matched:</span><span>${data.dashboardMetrics.cortexMatch.matched}</span></div>
+              <div class="metric"><span>CORA Match - Resolved:</span><span>${data.dashboardMetrics.cortexMatch.resolved}</span></div>
             </div>
           `
               : ""
@@ -485,7 +485,7 @@ export class ExportManager {
 
     doc.setFontSize(20);
     doc.setFont("helvetica", "bold");
-    doc.text("Cortex Dashboard Export", 20, 20);
+    doc.text("CORA Dashboard Export", 20, 20);
 
     doc.setFontSize(12);
     doc.setFont("helvetica", "normal");
@@ -497,19 +497,19 @@ export class ExportManager {
       ["Metric", "Value"],
       ["Total Controls", data.controls.length.toString()],
       [
-        "Cortex Match - Gaps",
+        "CORA Match - Gaps",
         data.dashboardMetrics?.cortexMatch.gap.toString() || "N/A",
       ],
       [
-        "Cortex Match - Unmatched",
+        "CORA Match - Unmatched",
         data.dashboardMetrics?.cortexMatch.unmatched.toString() || "N/A",
       ],
       [
-        "Cortex Match - Matched",
+        "CORA Match - Matched",
         data.dashboardMetrics?.cortexMatch.matched.toString() || "N/A",
       ],
       [
-        "Cortex Match - Resolved",
+        "CORA Match - Resolved",
         data.dashboardMetrics?.cortexMatch.resolved.toString() || "N/A",
       ],
     ];

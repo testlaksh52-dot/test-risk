@@ -4,13 +4,13 @@ import { useState, useEffect } from "react";
 import { ArrowLeft, Download, Filter, CheckCircle, X } from "lucide-react";
 import {
   mockDataStore,
-  User as CortexUser,
+  User as CORAUser,
   FilterConfig,
   Control,
 } from "@/lib/mockDataStore";
 
 interface DrillDownProps {
-  user: CortexUser;
+  user: CORAUser;
   selectedMetric: string;
   selectedValue: string;
   filters: FilterConfig;
@@ -131,7 +131,7 @@ const DrillDown = ({
       Owner: control.owner,
       Effectiveness: control.effectiveness,
       "Automation Type": control.automationType,
-      "Cortex Match": control.cortexMatch,
+      "CORA Match": control.cortexMatch,
       "Business Line": control.businessLine,
       Function: control.function,
     }));
@@ -194,7 +194,7 @@ const DrillDown = ({
                 ? "Control Effectiveness"
                 : selectedMetric === "automation"
                 ? "Control Automation"
-                : "Cortex Matching Status"}{" "}
+                : "CORA Matching Status"}{" "}
               - {selectedValue}
             </h1>
           </div>
@@ -385,7 +385,7 @@ const DrillDown = ({
                     Automation Type
                   </th>
                   <th className="text-left text-white text-[10px] font-medium p-3">
-                    Cortex Match
+                    CORA Match
                   </th>
                   <th className="text-left text-white text-[10px] font-medium p-3">
                     Business Line

@@ -39,7 +39,7 @@ export interface Control {
 
   // CORA Generated Data
   keyIndicators: "Gap" | "Needs Improvement" | "Manual";
-  coraMatch: "Gap" | "Unmatched" | "Matched" | "Resolved";
+  cortexMatch: "Gap" | "Unmatched" | "Matched" | "Resolved";
   finalScore: number;
   coraIndex: number;
 
@@ -105,7 +105,7 @@ export const mockControls: Control[] = [
 
     // CORA Generated Data
     keyIndicators: "Gap",
-    coraMatch: "Gap",
+    cortexMatch: "Gap",
     finalScore: 85,
     coraIndex: 8.5,
 
@@ -169,7 +169,7 @@ export const mockControls: Control[] = [
 
     // CORA Generated Data
     keyIndicators: "Needs Improvement",
-    coraMatch: "Unmatched",
+    cortexMatch: "Unmatched",
     finalScore: 72,
     coraIndex: 7.2,
 
@@ -237,7 +237,7 @@ export const mockControls: Control[] = [
 
     // CORA Generated Data
     keyIndicators: "Manual",
-    coraMatch: "Matched",
+    cortexMatch: "Matched",
     finalScore: 88,
     coraIndex: 8.8,
 
@@ -305,7 +305,7 @@ export const mockControls: Control[] = [
 
     // CORA Generated Data
     keyIndicators: "Gap",
-    coraMatch: "Gap",
+    cortexMatch: "Gap",
     finalScore: 65,
     coraIndex: 6.5,
 
@@ -332,20 +332,55 @@ export const mockControls: Control[] = [
     description:
       "Monitor ETL jobs monthly and escalate exceptions within 24 hours.",
     owner: "Maya Rodriguez",
-    keyIndicators: "Needs Improvement",
-    rewrite: "Rejected",
-    assignedTo: "Grace Thompson",
-    status: "Not Started",
-    update: "",
-    effectiveness: "Needs Improvement",
-    automationType: "Semi-Automated",
+
+    // Parent/Child Relationship
+    hierarchyLevel: "Child" as "Child",
+    parentControlId: "1",
+
+    // Status and Classifications
+    status: "Not Started" as "Not Started",
+    controlStatus: "Live" as "Live",
+
+    // Control Characteristics
+    effectiveness: "Needs Improvement" as "Needs Improvement",
+    automationType: "Semi-Automated" as "Semi-Automated",
+    controlMethod: "Detective" as "Detective",
+    controlType: "Detect" as "Detect",
     frequency: "Monthly",
-    controlType: "Detect",
+
+    // Business Context
     businessLine: "Commercial Banking",
     function: "Data Management",
     location: "UK",
-    coraMatch: "Unmatched",
+
+    // Risk Mapping
+    linkedRisks: [
+      {
+        riskId: "RSK-005",
+        riskName: "Data Loss Risk",
+        riskCategory: "IT" as "IT",
+      },
+    ],
+
+    // CORA Generated Data
+    keyIndicators: "Needs Improvement" as "Needs Improvement",
+    cortexMatch: "Unmatched" as "Unmatched",
     finalScore: 10,
+    coraIndex: 1.0,
+
+    // Enhancement Workflow
+    rewrite: "Rejected" as "Rejected",
+    assignedTo: "Grace Thompson",
+    enhancementStatus: "Not Started" as "Not Started",
+    enhancementRecommendation: "Improve monitoring frequency",
+    targetDate: "2024-06-30",
+    rootCause: "Insufficient monitoring",
+    comments: "Needs better automation",
+    lastUpdated: "2024-01-15",
+    version: "1.0",
+
+    // Legacy fields
+    update: "",
   },
   {
     id: "6",
@@ -354,20 +389,55 @@ export const mockControls: Control[] = [
     description:
       "Validate deployment changes monthly to ensure operational integrity.",
     owner: "Priya Mehta",
-    keyIndicators: "Manual",
-    rewrite: "Generated",
-    assignedTo: "Travis Barker",
-    status: "Not Started",
-    update: "",
-    effectiveness: "Effective",
-    automationType: "Automated",
+
+    // Parent/Child Relationship
+    hierarchyLevel: "Child" as "Child",
+    parentControlId: "1",
+
+    // Status and Classifications
+    status: "Not Started" as "Not Started",
+    controlStatus: "Live" as "Live",
+
+    // Control Characteristics
+    effectiveness: "Effective" as "Effective",
+    automationType: "Automated" as "Automated",
+    controlMethod: "Preventive" as "Preventive",
+    controlType: "Prevent" as "Prevent",
     frequency: "Monthly",
-    controlType: "Prevent",
+
+    // Business Context
     businessLine: "Investment Banking",
     function: "Ledger Management",
     location: "US",
-    coraMatch: "Matched",
+
+    // Risk Mapping
+    linkedRisks: [
+      {
+        riskId: "RSK-006",
+        riskName: "Operational Risk",
+        riskCategory: "Operational" as "Operational",
+      },
+    ],
+
+    // CORA Generated Data
+    keyIndicators: "Manual" as "Manual",
+    cortexMatch: "Matched" as "Matched",
     finalScore: 4,
+    coraIndex: 0.4,
+
+    // Enhancement Workflow
+    rewrite: "Generated" as "Generated",
+    assignedTo: "Travis Barker",
+    enhancementStatus: "Not Started" as "Not Started",
+    enhancementRecommendation: "Maintain current automation",
+    targetDate: "2024-03-31",
+    rootCause: "Good automation level",
+    comments: "Well automated control",
+    lastUpdated: "2024-01-15",
+    version: "1.0",
+
+    // Legacy fields
+    update: "",
   },
   ...Array.from({ length: 16 }, (_, i) => ({
     id: `${i + 7}`,
@@ -375,15 +445,17 @@ export const mockControls: Control[] = [
     name: `Control ${i + 7}`,
     description: `Sample control description for control ${i + 7}`,
     owner: ["Julie Smith", "Mike Johnson", "David Lee", "Sarah Wilson"][i % 4],
-    keyIndicators: ["Gap", "Needs Improvement", "Manual"][i % 3] as
-      | "Gap"
-      | "Needs Improvement"
-      | "Manual",
-    rewrite: ["Generated", "Not Started"][i % 2] as "Generated" | "Not Started",
-    assignedTo:
-      i % 2 === 0 ? `User ${i + 7} ${new Date().getDate()} Aug 25` : "Pending",
+
+    // Parent/Child Relationship
+    hierarchyLevel: (i % 3 === 0 ? "Parent" : "Child") as "Parent" | "Child",
+    parentControlId: i % 3 === 0 ? undefined : "1",
+    childControlIds: i % 3 === 0 ? ["2", "3"] : undefined,
+
+    // Status and Classifications
     status: "Not Started" as "Not Started",
-    update: "",
+    controlStatus: "Live" as "Live",
+
+    // Control Characteristics
     effectiveness: [
       "Effective",
       "Ineffective",
@@ -393,8 +465,14 @@ export const mockControls: Control[] = [
     automationType: ["Manual", "Semi-Automated", "IT Dependent", "Automated"][
       i % 4
     ] as "Manual" | "Semi-Automated" | "IT Dependent" | "Automated",
+    controlMethod: ["Preventive", "Detective", "Predictive"][i % 3] as
+      | "Preventive"
+      | "Detective"
+      | "Predictive",
+    controlType: ["Prevent", "Detect"][i % 2] as "Prevent" | "Detect",
     frequency: ["Daily", "Weekly", "Monthly", "Quarterly"][i % 4],
-    controlType: ["Preventive", "Detective", "Corrective"][i % 3],
+
+    // Business Context
     businessLine: [
       "Retail Banking",
       "Commercial Banking",
@@ -407,12 +485,47 @@ export const mockControls: Control[] = [
       "Credit Risk",
     ][i % 4],
     location: ["US", "UK", "EU", "APAC"][i % 4],
-    coraMatch: ["Gap", "Unmatched", "Matched", "Resolved"][i % 4] as
+
+    // Risk Mapping
+    linkedRisks: [
+      {
+        riskId: `RSK-${i + 7}`,
+        riskName: `Sample Risk ${i + 7}`,
+        riskCategory: ["Business", "Regulatory", "IT", "Operational"][i % 4] as
+          | "Business"
+          | "Regulatory"
+          | "IT"
+          | "Operational",
+      },
+    ],
+
+    // CORA Generated Data
+    keyIndicators: ["Gap", "Needs Improvement", "Manual"][i % 3] as
+      | "Gap"
+      | "Needs Improvement"
+      | "Manual",
+    cortexMatch: ["Gap", "Unmatched", "Matched", "Resolved"][i % 4] as
       | "Gap"
       | "Unmatched"
       | "Matched"
       | "Resolved",
     finalScore: (i + 7) * 3 + 10,
+    coraIndex: (i + 7) * 0.5,
+
+    // Enhancement Workflow
+    rewrite: ["Generated", "Not Started"][i % 2] as "Generated" | "Not Started",
+    assignedTo:
+      i % 2 === 0 ? `User ${i + 7} ${new Date().getDate()} Aug 25` : "Pending",
+    enhancementStatus: "Not Started" as "Not Started",
+    enhancementRecommendation: `Sample recommendation for control ${i + 7}`,
+    targetDate: "2024-12-31",
+    rootCause: "Sample root cause",
+    comments: `Sample comments for control ${i + 7}`,
+    lastUpdated: "2024-01-15",
+    version: "1.0",
+
+    // Legacy fields
+    update: "",
   })),
   // Sample control with amber amber red indicators
   {

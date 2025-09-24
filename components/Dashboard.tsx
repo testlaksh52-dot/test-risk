@@ -14,7 +14,7 @@ import {
 } from "lucide-react";
 import {
   mockDataStore,
-  User as CortexUser,
+  User as CORAUser,
   FilterConfig,
   SavedView,
   ExportConfig,
@@ -29,7 +29,7 @@ interface DashboardProps {
   onViewChange?: (
     view: "dashboard" | "control-management" | "data-ingestion"
   ) => void;
-  user?: CortexUser;
+  user?: CORAUser;
   onDrillDown?: (
     selectedMetric: string,
     selectedValue: string,
@@ -52,7 +52,7 @@ const Dashboard = ({
     controlFrequency: [],
     automationType: [],
     effectiveness: [],
-    coraMatch: [],
+    cortexMatch: [],
     owner: [],
     region: [],
   });
@@ -197,7 +197,7 @@ const Dashboard = ({
     }
     if (selectedCortexMatchFilter) {
       data = data.filter(
-        (control) => control.coraMatch === selectedCortexMatchFilter
+        (control) => control.cortexMatch === selectedCortexMatchFilter
       );
     }
 
@@ -230,11 +230,12 @@ const Dashboard = ({
 
   // Get dashboard metrics using mockControls data
   const dashboardMetrics = {
-    coraMatch: {
-      gap: mockControls.filter((c) => c.coraMatch === "Gap").length,
-      unmatched: mockControls.filter((c) => c.coraMatch === "Unmatched").length,
-      matched: mockControls.filter((c) => c.coraMatch === "Matched").length,
-      resolved: mockControls.filter((c) => c.coraMatch === "Resolved").length,
+    cortexMatch: {
+      gap: mockControls.filter((c) => c.cortexMatch === "Gap").length,
+      unmatched: mockControls.filter((c) => c.cortexMatch === "Unmatched")
+        .length,
+      matched: mockControls.filter((c) => c.cortexMatch === "Matched").length,
+      resolved: mockControls.filter((c) => c.cortexMatch === "Resolved").length,
     },
     effectiveness: {
       ineffective: mockControls.filter((c) => c.effectiveness === "Ineffective")
@@ -269,7 +270,7 @@ const Dashboard = ({
       controlFrequency: [],
       automationType: [],
       effectiveness: [],
-      coraMatch: [],
+      cortexMatch: [],
       owner: [],
       region: [],
     });
@@ -467,8 +468,8 @@ const Dashboard = ({
       {
         label: "Ineffective",
         value: dashboardMetrics.effectiveness.ineffective,
-        color: "bg-cora-red",
-        textColor: "text-cora-red",
+        color: "bg-cortex-red",
+        textColor: "text-cortex-red",
       },
       {
         label: "Needs Improvement",
@@ -479,14 +480,14 @@ const Dashboard = ({
       {
         label: "Not Rated",
         value: dashboardMetrics.effectiveness.notRated,
-        color: "bg-cora-gray",
-        textColor: "text-cora-gray",
+        color: "bg-cortex-gray",
+        textColor: "text-cortex-gray",
       },
       {
         label: "Effective",
         value: dashboardMetrics.effectiveness.effective,
-        color: "bg-cora-green",
-        textColor: "text-cora-green",
+        color: "bg-cortex-green",
+        textColor: "text-cortex-green",
       },
     ];
 
@@ -563,8 +564,8 @@ const Dashboard = ({
       {
         label: "Manual",
         value: dashboardMetrics.automation.manual,
-        color: "bg-cora-red",
-        textColor: "text-cora-red",
+        color: "bg-cortex-red",
+        textColor: "text-cortex-red",
       },
       {
         label: "Semi-Automated",
@@ -575,14 +576,14 @@ const Dashboard = ({
       {
         label: "IT Dependent",
         value: dashboardMetrics.automation.itDependent,
-        color: "bg-cora-green",
-        textColor: "text-cora-green",
+        color: "bg-cortex-green",
+        textColor: "text-cortex-green",
       },
       {
         label: "Automated",
         value: dashboardMetrics.automation.automated,
-        color: "bg-cora-blue",
-        textColor: "text-cora-blue",
+        color: "bg-cortex-blue",
+        textColor: "text-cortex-blue",
       },
     ];
 
@@ -651,41 +652,50 @@ const Dashboard = ({
   const getStatusColor = (status: string) => {
     switch (status) {
       case "Gap":
-        return "bg-cora-red";
+        return "bg-cortex-red";
       case "Needs Improvement":
         return "bg-amber-500";
       case "Unmatched":
         return "bg-amber-500";
       case "Manual":
-        return "bg-cora-red";
+        return "bg-cortex-red";
       case "Generated":
-        return "bg-cora-red";
+        return "bg-cortex-red";
       case "Not Started":
-        return "bg-cora-gray";
+        return "bg-cortex-gray";
       case "Approved":
-        return "bg-cora-blue";
+        return "bg-cortex-blue";
       case "Rejected":
-        return "bg-cora-red";
+        return "bg-cortex-red";
       case "Completed":
-        return "bg-cora-green";
+        return "bg-cortex-green";
       case "In review":
-        return "bg-cora-blue";
+        return "bg-cortex-blue";
       case "Outstanding":
         return "bg-amber-500";
       default:
-        return "bg-cora-gray";
+        return "bg-cortex-gray";
     }
   };
 
   const getKeyIndicatorBoxes = (control: any) => {
     // Dynamic values based on each control's actual data
+    // If control is completed, show green for improved indicators
+    const isCompleted = control.status === "Completed";
+
     return [
       {
-        color: getStatusColor(control.coraMatch),
-        text: control.coraMatch,
+        color:
+          isCompleted && control.cortexMatch === "Matched"
+            ? "bg-cortex-green"
+            : getStatusColor(control.cortexMatch),
+        text: control.cortexMatch,
       },
       {
-        color: getStatusColor(control.effectiveness),
+        color:
+          isCompleted && control.effectiveness === "Effective"
+            ? "bg-cortex-green"
+            : getStatusColor(control.effectiveness),
         text: control.effectiveness,
       },
       {
@@ -715,7 +725,7 @@ const Dashboard = ({
           <div className="flex items-center space-x-4">
             <button
               onClick={() => setShowSaveViewModal(true)}
-              className="bg-cora-red text-white px-4 py-2 rounded text-sm font-medium font-sans hover:bg-red-600 flex items-center space-x-2"
+              className="bg-cortex-red text-white px-4 py-2 rounded text-sm font-medium font-sans hover:bg-red-600 flex items-center space-x-2"
             >
               <Save size={16} />
               <span>Save as View</span>
@@ -736,7 +746,7 @@ const Dashboard = ({
                 className={`px-4 py-2 rounded text-sm font-medium font-sans flex items-center space-x-2 ${
                   isExporting
                     ? "bg-gray-500 text-gray-300 cursor-not-allowed"
-                    : "bg-cora-blue text-white hover:bg-blue-600"
+                    : "bg-cortex-blue text-white hover:bg-blue-600"
                 }`}
               >
                 <Download size={16} />
@@ -795,7 +805,7 @@ const Dashboard = ({
                               includeCharts: e.target.checked,
                             })
                           }
-                          className="w-4 h-4 text-cora-blue bg-navy-light border-gray-300 rounded focus:ring-cora-blue"
+                          className="w-4 h-4 text-cortex-blue bg-navy-light border-gray-300 rounded focus:ring-cortex-blue"
                         />
                         <label className="text-white text-sm">
                           Include Charts
@@ -811,7 +821,7 @@ const Dashboard = ({
                               includeAuditTrail: e.target.checked,
                             })
                           }
-                          className="w-4 h-4 text-cora-blue bg-navy-light border-gray-300 rounded focus:ring-cora-blue"
+                          className="w-4 h-4 text-cortex-blue bg-navy-light border-gray-300 rounded focus:ring-cortex-blue"
                         />
                         <label className="text-white text-sm">
                           Include Audit Trail
@@ -823,7 +833,7 @@ const Dashboard = ({
                         className={`w-full py-2 rounded-lg transition-colors ${
                           isExporting
                             ? "bg-gray-500 text-gray-300 cursor-not-allowed"
-                            : "bg-cora-blue text-white hover:bg-blue-600"
+                            : "bg-cortex-blue text-white hover:bg-blue-600"
                         }`}
                       >
                         {isExporting
@@ -863,7 +873,7 @@ const Dashboard = ({
                   type="text"
                   value={newViewName}
                   onChange={(e) => setNewViewName(e.target.value)}
-                  className="w-full bg-modal-input backdrop-blur-sm text-white px-3 py-2 rounded-lg border border-glass-border focus:ring-2 focus:ring-cora-blue focus:border-cortex-blue"
+                  className="w-full bg-modal-input backdrop-blur-sm text-white px-3 py-2 rounded-lg border border-glass-border focus:ring-2 focus:ring-cortex-blue focus:border-cortex-blue"
                   placeholder="Enter view name"
                 />
               </div>
@@ -876,7 +886,7 @@ const Dashboard = ({
                 </button>
                 <button
                   onClick={saveCurrentView}
-                  className="bg-cora-blue text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-colors"
+                  className="bg-cortex-blue text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-colors"
                 >
                   Save View
                 </button>
@@ -904,13 +914,13 @@ const Dashboard = ({
                   <span
                     className={`text-white px-2 py-1 rounded text-xs ${
                       selectedCortexMatchFilter === "Gap"
-                        ? "bg-cora-red"
+                        ? "bg-cortex-red"
                         : selectedCortexMatchFilter === "Unmatched"
                         ? "bg-amber-500"
                         : selectedCortexMatchFilter === "Matched"
-                        ? "bg-cora-green"
+                        ? "bg-cortex-green"
                         : selectedCortexMatchFilter === "Resolved"
-                        ? "bg-cora-blue"
+                        ? "bg-cortex-blue"
                         : "bg-gray-500"
                     }`}
                   >
@@ -921,13 +931,13 @@ const Dashboard = ({
                   <span
                     className={`text-white px-2 py-1 rounded text-xs ${
                       selectedEffectivenessFilter === "Ineffective"
-                        ? "bg-cora-red"
+                        ? "bg-cortex-red"
                         : selectedEffectivenessFilter === "Needs Improvement"
                         ? "bg-amber-500"
                         : selectedEffectivenessFilter === "Not Rated"
-                        ? "bg-cora-gray"
+                        ? "bg-cortex-gray"
                         : selectedEffectivenessFilter === "Effective"
-                        ? "bg-cora-green"
+                        ? "bg-cortex-green"
                         : "bg-gray-500"
                     }`}
                   >
@@ -938,13 +948,13 @@ const Dashboard = ({
                   <span
                     className={`text-white px-2 py-1 rounded text-xs ${
                       selectedAutomationFilter === "Manual"
-                        ? "bg-cora-red"
+                        ? "bg-cortex-red"
                         : selectedAutomationFilter === "Semi-Automated"
                         ? "bg-amber-500"
                         : selectedAutomationFilter === "IT Dependent"
-                        ? "bg-cora-green"
+                        ? "bg-cortex-green"
                         : selectedAutomationFilter === "Automated"
-                        ? "bg-cora-blue"
+                        ? "bg-cortex-blue"
                         : "bg-gray-500"
                     }`}
                   >
@@ -994,7 +1004,7 @@ const Dashboard = ({
             </div>
             <button
               onClick={resetFilters}
-              className="bg-cora-red text-white px-4 py-2 rounded text-sm font-medium hover:bg-red-600 flex items-center space-x-2"
+              className="bg-cortex-red text-white px-4 py-2 rounded text-sm font-medium hover:bg-red-600 flex items-center space-x-2"
             >
               <RotateCcw size={16} />
               <span>Reset</span>
@@ -1180,7 +1190,7 @@ const Dashboard = ({
                 }}
                 readOnly
                 data-date-picker="trigger"
-                className="bg-glass-aurora backdrop-blur-sm text-white px-4 py-2 rounded-xl border border-glass-border placeholder-gray-400 font-sans cursor-pointer hover:bg-glass-mystic hover:backdrop-blur-md transition-all duration-500 focus:outline-none focus:ring-2 focus:ring-cora-blue focus:border-cortex-blue shadow-lg min-w-[250px] text-sm"
+                className="bg-glass-aurora backdrop-blur-sm text-white px-4 py-2 rounded-xl border border-glass-border placeholder-gray-400 font-sans cursor-pointer hover:bg-glass-mystic hover:backdrop-blur-md transition-all duration-500 focus:outline-none focus:ring-2 focus:ring-cortex-blue focus:border-cortex-blue shadow-lg min-w-[250px] text-sm"
               />
               <svg
                 className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5 pointer-events-none"
@@ -1231,7 +1241,7 @@ const Dashboard = ({
                               start: e.target.value,
                             })
                           }
-                          className="w-full bg-modal-input backdrop-blur-sm text-white px-3 py-2 rounded-lg border border-glass-border focus:ring-2 focus:ring-cora-blue focus:border-cortex-blue transition-colors"
+                          className="w-full bg-modal-input backdrop-blur-sm text-white px-3 py-2 rounded-lg border border-glass-border focus:ring-2 focus:ring-cortex-blue focus:border-cortex-blue transition-colors"
                           style={{ colorScheme: "dark" }}
                         />
                       </div>
@@ -1245,7 +1255,7 @@ const Dashboard = ({
                           onChange={(e) =>
                             setDateRange({ ...dateRange, end: e.target.value })
                           }
-                          className="w-full bg-modal-input backdrop-blur-sm text-white px-3 py-2 rounded-lg border border-glass-border focus:ring-2 focus:ring-cora-blue focus:border-cortex-blue transition-colors"
+                          className="w-full bg-modal-input backdrop-blur-sm text-white px-3 py-2 rounded-lg border border-glass-border focus:ring-2 focus:ring-cortex-blue focus:border-cortex-blue transition-colors"
                           style={{ colorScheme: "dark" }}
                         />
                       </div>
@@ -1270,7 +1280,7 @@ const Dashboard = ({
                         </button>
                         <button
                           onClick={() => setShowDatePicker(false)}
-                          className="px-4 py-2 text-sm font-medium text-white bg-cora-blue hover:bg-blue-600 rounded-lg transition-colors shadow-lg"
+                          className="px-4 py-2 text-sm font-medium text-white bg-cortex-blue hover:bg-blue-600 rounded-lg transition-colors shadow-lg"
                         >
                           Apply
                         </button>
@@ -1284,7 +1294,7 @@ const Dashboard = ({
 
           <button
             onClick={resetFilters}
-            className="bg-cora-red text-white px-4 mt-4 py-2 rounded text-sm font-medium hover:bg-red-600"
+            className="bg-cortex-red text-white px-4 mt-4 py-2 rounded text-sm font-medium hover:bg-red-600"
           >
             RESET
           </button>
@@ -1303,9 +1313,9 @@ const Dashboard = ({
             <div className="flex space-x-4">
               <MetricCard
                 title="GAPS"
-                value={dashboardMetrics.coraMatch.gap}
+                value={dashboardMetrics.cortexMatch.gap}
                 color="text-white"
-                bgColor="bg-cora-red"
+                bgColor="bg-cortex-red"
                 onClick={() => {
                   const newFilter =
                     selectedCortexMatchFilter === "Gap" ? null : "Gap";
@@ -1315,7 +1325,7 @@ const Dashboard = ({
               />
               <MetricCard
                 title="UNMATCHED"
-                value={dashboardMetrics.coraMatch.unmatched}
+                value={dashboardMetrics.cortexMatch.unmatched}
                 color="text-white"
                 bgColor="bg-amber-500"
                 titleColor="text-white"
@@ -1330,9 +1340,9 @@ const Dashboard = ({
               />
               <MetricCard
                 title="MATCHED"
-                value={dashboardMetrics.coraMatch.matched}
+                value={dashboardMetrics.cortexMatch.matched}
                 color="text-white"
-                bgColor="bg-cora-green"
+                bgColor="bg-cortex-green"
                 onClick={() => {
                   const newFilter =
                     selectedCortexMatchFilter === "Matched" ? null : "Matched";
@@ -1342,9 +1352,9 @@ const Dashboard = ({
               />
               <MetricCard
                 title="RESOLVED"
-                value={dashboardMetrics.coraMatch.resolved}
+                value={dashboardMetrics.cortexMatch.resolved}
                 color="text-white"
-                bgColor="bg-cora-blue"
+                bgColor="bg-cortex-blue"
                 onClick={() => {
                   const newFilter =
                     selectedCortexMatchFilter === "Resolved"
@@ -1387,7 +1397,7 @@ const Dashboard = ({
                       onClick={() => setViewMode("all")}
                       className={`px-3 py-1 text-xs rounded-md transition-all duration-300 ${
                         viewMode === "all"
-                          ? "bg-cora-blue text-white shadow-lg"
+                          ? "bg-cortex-blue text-white shadow-lg"
                           : "text-gray-400 hover:text-white"
                       }`}
                     >
@@ -1397,7 +1407,7 @@ const Dashboard = ({
                       onClick={() => setViewMode("parent")}
                       className={`px-3 py-1 text-xs rounded-md transition-all duration-300 flex items-center space-x-1 ${
                         viewMode === "parent"
-                          ? "bg-cora-blue text-white shadow-lg"
+                          ? "bg-cortex-blue text-white shadow-lg"
                           : "text-gray-400 hover:text-white"
                       }`}
                     >
@@ -1408,7 +1418,7 @@ const Dashboard = ({
                       onClick={() => setViewMode("child")}
                       className={`px-3 py-1 text-xs rounded-md transition-all duration-300 flex items-center space-x-1 ${
                         viewMode === "child"
-                          ? "bg-cora-blue text-white shadow-lg"
+                          ? "bg-cortex-blue text-white shadow-lg"
                           : "text-gray-400 hover:text-white"
                       }`}
                     >
@@ -1500,7 +1510,7 @@ const Dashboard = ({
                       <span
                         className={`inline-flex items-center px-2 py-1 rounded text-[10px] font-medium text-white ${
                           control.hierarchyLevel === "Parent"
-                            ? "bg-cora-blue"
+                            ? "bg-cortex-blue"
                             : "bg-amber-500"
                         } font-sans`}
                       >
@@ -1539,10 +1549,10 @@ const Dashboard = ({
                     <td className="p-3">
                       <span
                         className={`inline-flex items-center px-2 py-1 rounded text-[10px] font-medium text-white ${getStatusColor(
-                          control.coraMatch
+                          control.cortexMatch
                         )} font-sans`}
                       >
-                        {control.coraMatch}
+                        {control.cortexMatch}
                       </span>
                     </td>
                     <td className="p-3 relative" data-dropdown="assignee">
@@ -1643,7 +1653,7 @@ const Dashboard = ({
                     onClick={() => setCurrentPage(pageNumber)}
                     className={`px-3 py-1 text-xs rounded font-sans ${
                       currentPage === pageNumber
-                        ? "bg-cora-blue text-white"
+                        ? "bg-cortex-blue text-white"
                         : "text-gray-400 hover:text-white hover:bg-navy-darker"
                     }`}
                   >
@@ -1675,7 +1685,7 @@ const Dashboard = ({
         <div className="flex justify-between items-center text-[10px] text-gray-400">
           <div className="flex items-center space-x-2">
             <span>production</span>
-            <div className="w-2 h-2 bg-cora-blue rounded-full"></div>
+            <div className="w-2 h-2 bg-cortex-blue rounded-full"></div>
             <span>main</span>
             <span>Latest</span>
           </div>
