@@ -4,7 +4,6 @@ import { useState, useEffect } from "react";
 import { X, Save, Edit3, Lock, CheckCircle, AlertCircle } from "lucide-react";
 import { Control, User } from "@/lib/mockDataStore";
 import { mockDataStore } from "@/lib/mockDataStore";
-import { mockControls } from "@/lib/mockData";
 
 interface ControlDetailModalProps {
   control: Control | null;
@@ -31,7 +30,7 @@ const ControlDetailModal = ({
   const canEdit =
     user?.permissions.includes("edit_controls") ||
     user?.role === "Manager" ||
-    user?.role === "Cortex_Agent" ||
+    user?.role === "CORA_Agent" ||
     user?.role === "2LOD";
 
   // Helper functions for parent/child navigation
@@ -41,14 +40,14 @@ const ControlDetailModal = ({
       children: [] as Control[],
     };
 
-    if (control.hierarchyLevel === "Child" && control.parentControlId) {
+    if (!control.isParent && control.parentControlId) {
       related.parent =
-        mockControls.find((c) => c.id === control.parentControlId) || null;
+        mockDataStore.getControls().find((c) => c.id === control.parentControlId) || null;
     }
 
-    if (control.hierarchyLevel === "Parent" && control.childControlIds) {
-      related.children = mockControls.filter((c) =>
-        control.childControlIds?.includes(c.id)
+    if (control.isParent) {
+      related.children = mockDataStore.getControls().filter((c) =>
+        c.parentControlId === control.id
       );
     }
 
