@@ -89,7 +89,7 @@ const AuthSystem = ({ onLogin, onLogout }: AuthSystemProps) => {
                 height={32}
               />
             </div>
-            <h1 className="text-2xl font-bold text-white mb-2">CORTEX</h1>
+            <h1 className="text-2xl font-bold text-white mb-2">CORA</h1>
             <p className="text-gray-300 text-sm">
               Control & Risk Analytics Platform
             </p>

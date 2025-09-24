@@ -291,86 +291,86 @@ const ControlManagement = ({ onViewChange, user }: ControlManagementProps) => {
       {/* Filters Section */}
       <div className="bg-glass-aurora backdrop-blur-sm px-6 py-4 border-b border-glass-border">
         <div className="flex items-center space-x-4">
-              <div className="flex flex-col">
-                <label className="text-white text-xs mb-1 font-sans">
-                  Control Owner
-                </label>
-                <div className="relative">
-                  <select
-                    value={selectedControlOwner}
-                    onChange={(e) => setSelectedControlOwner(e.target.value)}
-                    className="bg-glass-aurora text-white px-4 py-2 rounded-xl border border-glass-border appearance-none pr-8 min-w-[200px] backdrop-blur-sm hover:bg-glass-mystic transition-all duration-500 shadow-lg text-sm"
-                  >
-                    <option value="">Select Control Owner</option>
-                    {filterOptions.owners.map((owner) => (
-                      <option key={owner} value={owner}>
-                        {owner}
-                      </option>
-                    ))}
-                  </select>
-                  <ChevronDown
-                    className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-400"
-                    size={16}
-                  />
-                </div>
-              </div>
+          <div className="flex flex-col">
+            <label className="text-white text-xs mb-1 font-sans">
+              Control Owner
+            </label>
+            <div className="relative">
+              <select
+                value={selectedControlOwner}
+                onChange={(e) => setSelectedControlOwner(e.target.value)}
+                className="bg-glass-aurora text-white px-4 py-2 rounded-xl border border-glass-border appearance-none pr-8 min-w-[200px] backdrop-blur-sm hover:bg-glass-mystic transition-all duration-500 shadow-lg text-sm"
+              >
+                <option value="">Select Control Owner</option>
+                {filterOptions.owners.map((owner) => (
+                  <option key={owner} value={owner}>
+                    {owner}
+                  </option>
+                ))}
+              </select>
+              <ChevronDown
+                className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-400"
+                size={16}
+              />
+            </div>
+          </div>
 
-              <div className="flex flex-col">
-                <label className="text-white text-xs mb-1 font-sans">
-                  Control ID
-                </label>
-                <div className="relative">
-                  <select
-                    value={selectedControlId}
-                    onChange={(e) => setSelectedControlId(e.target.value)}
-                    className="bg-glass-aurora text-white px-4 py-2 rounded-xl border border-glass-border appearance-none pr-8 min-w-[200px] backdrop-blur-sm hover:bg-glass-mystic transition-all duration-500 shadow-lg text-sm"
-                  >
-                    <option value="">Select Control ID</option>
-                    {mockControls.map((control) => (
-                      <option key={control.id} value={control.id}>
-                        {control.code}
-                      </option>
-                    ))}
-                  </select>
-                  <ChevronDown
-                    className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-400"
-                    size={16}
-                  />
-                </div>
-              </div>
+          <div className="flex flex-col">
+            <label className="text-white text-xs mb-1 font-sans">
+              Control ID
+            </label>
+            <div className="relative">
+              <select
+                value={selectedControlId}
+                onChange={(e) => setSelectedControlId(e.target.value)}
+                className="bg-glass-aurora text-white px-4 py-2 rounded-xl border border-glass-border appearance-none pr-8 min-w-[200px] backdrop-blur-sm hover:bg-glass-mystic transition-all duration-500 shadow-lg text-sm"
+              >
+                <option value="">Select Control ID</option>
+                {mockControls.map((control) => (
+                  <option key={control.id} value={control.id}>
+                    {control.code}
+                  </option>
+                ))}
+              </select>
+              <ChevronDown
+                className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-400"
+                size={16}
+              />
+            </div>
+          </div>
 
-              <div className="flex flex-col">
-                <label className="text-white text-xs mb-1 font-sans">
-                  Assigned To
-                </label>
-                <AssignedToDropdown
-                  value={selectedAssignedTo}
-                  onChange={setSelectedAssignedTo}
-                  options={assignedToOptions}
-                />
-              </div>
+          <div className="flex flex-col">
+            <label className="text-white text-xs mb-1 font-sans">
+              Assigned To
+            </label>
+            <AssignedToDropdown
+              value={selectedAssignedTo}
+              onChange={setSelectedAssignedTo}
+              options={assignedToOptions}
+            />
+          </div>
 
-              <div className="flex items-end">
-                <button
-                  onClick={() => {
-                    setSelectedControlOwner("");
-                    setSelectedControlId("");
-                    setSelectedAssignedTo("");
-                  }}
+          <div className="flex items-end">
+            <button
+              onClick={() => {
+                setSelectedControlOwner("");
+                setSelectedControlId("");
+                setSelectedAssignedTo("");
+              }}
               className="bg-cora-red text-white mt-4 px-4 py-2 rounded text-sm font-medium hover:bg-red-600"
-                >
-                  RESET
-                </button>
-              </div>
+            >
+              RESET
+            </button>
           </div>
         </div>
+      </div>
 
-        {/* Control Detail Table */}
+      {/* Control Detail Table */}
       <div className="px-6 py-4 border-b border-glass-border">
         <div className="bg-glass-aurora backdrop-blur-sm rounded-2xl border border-glass-border shadow-2xl">
           <div className="flex justify-between items-center p-4 border-b border-glass-border">
             <div className="flex items-center space-x-4">
-            <h3 className="text-white text-sm font-medium">Control Detail</h3>
+              <h3 className="text-white text-sm font-medium">Control Detail</h3>
 
               {/* Hierarchy View Toggle */}
               <div className="flex items-center space-x-2">
@@ -600,8 +600,8 @@ const ControlManagement = ({ onViewChange, user }: ControlManagementProps) => {
               </tbody>
             </table>
           </div>
-          </div>
         </div>
+      </div>
 
       {/* Bottom Section - Control Enhancement and Management Layout */}
       {selectedUpdateRows.size > 0 ? (
@@ -928,14 +928,14 @@ const ControlManagement = ({ onViewChange, user }: ControlManagementProps) => {
                   </div>
                 </div>
 
-          {/* Key Indicator Recommendations */}
+                {/* Key Indicator Recommendations */}
                 <div className="grid grid-cols-2 gap-4">
                   {/* Left Side: Actual colors from selected row with checkboxes */}
                   <div className="bg-glass-aurora backdrop-blur-sm rounded-lg border border-glass-border p-4">
-            <h4 className="text-white font-medium mb-4">
-              Key Indicator Recommendations for Control Enhancement
-            </h4>
-            <div className="space-y-3">
+                    <h4 className="text-white font-medium mb-4">
+                      Key Indicator Recommendations for Control Enhancement
+                    </h4>
+                    <div className="space-y-3">
                       {getKeyIndicatorBoxes(selectedControlForUpdate).map(
                         (box, index) => (
                           <div
@@ -944,9 +944,9 @@ const ControlManagement = ({ onViewChange, user }: ControlManagementProps) => {
                           >
                             <div
                               className={`w-4 h-4 rounded ${box.color}`}
-                  ></div>
-                  <input
-                    type="checkbox"
+                            ></div>
+                            <input
+                              type="checkbox"
                               checked={selectedKeyIndicators.has(
                                 (index + 1).toString()
                               )}
@@ -955,8 +955,8 @@ const ControlManagement = ({ onViewChange, user }: ControlManagementProps) => {
                                   (index + 1).toString()
                                 )
                               }
-                    className="w-4 h-4 rounded border-gray-400"
-                  />
+                              className="w-4 h-4 rounded border-gray-400"
+                            />
                             <span className="text-white text-sm">
                               {index === 0
                                 ? "Not a standardized CORA control."
@@ -966,18 +966,18 @@ const ControlManagement = ({ onViewChange, user }: ControlManagementProps) => {
                                 ? "This is a manual control."
                                 : `Key Indicator ${index + 1}`}
                             </span>
-                </div>
+                          </div>
                         )
                       )}
-            </div>
-          </div>
+                    </div>
+                  </div>
 
                   {/* Right Side: Preview colors (what it will become after save) without checkboxes */}
                   <div className="bg-glass-aurora backdrop-blur-sm rounded-lg border border-glass-border p-4">
-              <h4 className="text-white font-medium mb-4">
-                Key Indicator Update on Submission
-              </h4>
-              <div className="space-y-3 mb-4">
+                    <h4 className="text-white font-medium mb-4">
+                      Key Indicator Update on Submission
+                    </h4>
+                    <div className="space-y-3 mb-4">
                       {getKeyIndicatorBoxes(selectedControlForUpdate).map(
                         (box, index) => {
                           const isCommitted = committedRows.has(
@@ -1005,7 +1005,7 @@ const ControlManagement = ({ onViewChange, user }: ControlManagementProps) => {
                             >
                               <div
                                 className={`w-4 h-4 rounded ${previewColor}`}
-                    ></div>
+                              ></div>
                               {/* No checkbox - this is just a preview */}
                               <span className="text-white text-sm ml-6">
                                 {index === 0
@@ -1022,76 +1022,76 @@ const ControlManagement = ({ onViewChange, user }: ControlManagementProps) => {
                                   → Will improve
                                 </span>
                               )}
-                  </div>
+                            </div>
                           );
                         }
                       )}
-              </div>
+                    </div>
 
                     {/* Associated Risks */}
                     <div className="mt-4 border-t border-gray-600 pt-4">
-                <h5 className="text-white font-medium mb-2">
-                  Associated Risks
-                </h5>
-                <div className="text-gray-300 text-sm">
+                      <h5 className="text-white font-medium mb-2">
+                        Associated Risks
+                      </h5>
+                      <div className="text-gray-300 text-sm">
                         <div className="mb-1">
                           Risk Location:{" "}
                           {selectedControlForUpdate.location || "US"}
-                </div>
+                        </div>
                         <div>Name of linked risks here</div>
-              </div>
-            </div>
+                      </div>
+                    </div>
                   </div>
-        </div>
+                </div>
 
                 {/* Improvement Generation */}
-        {showImprovement && (
+                {showImprovement && (
                   <div className="bg-glass-aurora backdrop-blur-sm rounded-2xl border border-glass-border shadow-2xl p-6">
                     <h3 className="text-white text-lg font-semibold mb-4">
-              Improvement Generation
+                      Improvement Generation
                     </h3>
                     <div className="text-white text-sm mb-4">
                       Changes based on which indicator
                     </div>
-            <div className="grid grid-cols-2 gap-6">
-              {/* Current Control Description */}
-              <div>
-                <div className="flex items-center mb-3">
-                  <div className="w-4 h-4 bg-amber-500 rounded mr-3"></div>
-                  <h5 className="text-white font-medium">
+                    <div className="grid grid-cols-2 gap-6">
+                      {/* Current Control Description */}
+                      <div>
+                        <div className="flex items-center mb-3">
+                          <div className="w-4 h-4 bg-amber-500 rounded mr-3"></div>
+                          <h5 className="text-white font-medium">
                             Current Control Description
-                  </h5>
-                </div>
+                          </h5>
+                        </div>
                         <div className="text-white text-xs mb-2">
                           Date last tested
-                </div>
-                <div className="bg-navy-dark rounded p-4 text-white text-sm leading-relaxed">
-                  {improvementGeneration.current.content}
-                </div>
-              </div>
+                        </div>
+                        <div className="bg-navy-dark rounded p-4 text-white text-sm leading-relaxed">
+                          {improvementGeneration.current.content}
+                        </div>
+                      </div>
 
-              {/* Suggested Control Description */}
-              <div>
-                <div className="flex items-center mb-3">
-                  <div className="w-4 h-4 bg-cora-green rounded mr-3"></div>
-                  <h5 className="text-white font-medium">
+                      {/* Suggested Control Description */}
+                      <div>
+                        <div className="flex items-center mb-3">
+                          <div className="w-4 h-4 bg-cora-green rounded mr-3"></div>
+                          <h5 className="text-white font-medium">
                             Suggested Control Description
-                  </h5>
-                </div>
-                <div className="bg-navy-dark rounded p-4 text-white text-sm leading-relaxed">
+                          </h5>
+                        </div>
+                        <div className="bg-navy-dark rounded p-4 text-white text-sm leading-relaxed">
                           <div className="space-y-4">
                             <div>
                               <div className="font-semibold text-cora-blue mb-2">
                                 OBJECTIVES:
-                </div>
+                              </div>
                               <div className="pl-3">
                                 To detect payment processing errors, fraud,
                                 misallocations, operational failures, and
                                 regulatory breaches to ensure all payment
                                 movements are fully reconciled and discrepancies
                                 are resolved or escalated as appropriate.
-              </div>
-            </div>
+                              </div>
+                            </div>
 
                             <div>
                               <div className="font-semibold text-cora-green mb-2">
@@ -1216,18 +1216,18 @@ const ControlManagement = ({ onViewChange, user }: ControlManagementProps) => {
                       <button className="bg-gray-600 text-white px-4 py-2 rounded text-sm font-medium hover:bg-gray-700">
                         Cancel
                       </button>
-              <button
-                onClick={handleCommit}
+                      <button
+                        onClick={handleCommit}
                         className="bg-cora-red text-white px-4 py-2 rounded text-sm font-medium hover:bg-red-600"
-              >
+                      >
                         Save Enhancement
-              </button>
+                      </button>
                     </div>
                   </div>
-            </div>
+                </div>
+              </div>
+            )}
           </div>
-        )}
-      </div>
         </div>
       ) : (
         <div className="flex items-center justify-center h-32">

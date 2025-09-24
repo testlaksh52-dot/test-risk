@@ -232,8 +232,7 @@ const Dashboard = ({
   const dashboardMetrics = {
     coraMatch: {
       gap: mockControls.filter((c) => c.coraMatch === "Gap").length,
-      unmatched: mockControls.filter((c) => c.coraMatch === "Unmatched")
-        .length,
+      unmatched: mockControls.filter((c) => c.coraMatch === "Unmatched").length,
       matched: mockControls.filter((c) => c.coraMatch === "Matched").length,
       resolved: mockControls.filter((c) => c.coraMatch === "Resolved").length,
     },
@@ -1298,9 +1297,9 @@ const Dashboard = ({
         <div className="flex gap-6 mb-6">
           {/* Cortex Match Status */}
           <div className="flex-1">
-        <div className="text-white text-sm font-semibold mb-3 font-sans">
-          CORA Matching Status
-        </div>
+            <div className="text-white text-sm font-semibold mb-3 font-sans">
+              CORA Matching Status
+            </div>
             <div className="flex space-x-4">
               <MetricCard
                 title="GAPS"

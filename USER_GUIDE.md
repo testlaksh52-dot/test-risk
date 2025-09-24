@@ -1,4 +1,4 @@
-# 🚀 CORTEX Control & Risk Analytics Platform - User Guide
+# 🚀 CORA Control & Risk Analytics Platform - User Guide
 
 ## 📋 Table of Contents
 
@@ -26,7 +26,7 @@
 ### **Access the Platform**
 
 1. Navigate to the application URL
-2. You'll see the CORTEX login screen
+2. You'll see the CORA login screen
 3. Use the provided demo credentials to access the system
 
 ---
@@ -35,7 +35,7 @@
 
 ### **Login Screen Features**
 
-- **Professional Design**: Glassmorphism UI with Cortex branding
+- **Professional Design**: Glassmorphism UI with CORA branding
 - **Secure Authentication**: Username/password validation
 - **Session Management**: Automatic login persistence
 - **Role-Based Access**: Different permissions per user type
@@ -80,7 +80,7 @@ Password: password123
 
 ### **Key Metrics Displayed**
 
-1. **Cortex Matching Status**
+1. **CORA Matching Status**
 
    - Gaps (Red)
    - Unmatched (Amber)
@@ -127,7 +127,7 @@ Password: password123
 
 2. **Field Mapping**
 
-   - Map your data fields to Cortex data model
+   - Map your data fields to CORA data model
    - Required fields must be mapped
    - Visual mapping interface
    - Error highlighting for missing mappings
@@ -188,7 +188,7 @@ Password: password123
 
 ### **Interactive Charts**
 
-1. **Cortex Index Rating Match**
+1. **CORA Index Rating Match**
 
    - Visual distribution of matching status
    - Click segments for detailed analysis
@@ -224,7 +224,7 @@ Password: password123
 
 - **Sortable Columns**: Click headers to sort
 - **Search Functionality**: Find specific controls
-- **Status Filtering**: Filter by Cortex match status
+- **Status Filtering**: Filter by CORA match status
 - **Row Selection**: Checkbox selection for bulk actions
 - **Pagination**: Navigate through large datasets
 
@@ -433,7 +433,7 @@ Password: password123
 
 ---
 
-**🚀 Ready to explore the CORTEX Control & Risk Analytics Platform!**
+**🚀 Ready to explore the CORA Control & Risk Analytics Platform!**
 
 _This user guide covers all major features and workflows. For technical details, refer to the README.md file._
 
